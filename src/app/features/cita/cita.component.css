@@ -1,0 +1,268 @@
+/* src/app/features/citas/citas.css */
+
+:host ::ng-deep .sanbella-booking {
+  background-color: #fdfaf9;
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: block;
+}
+
+:host ::ng-deep .appointment-card {
+  background: white !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.sanbella-booking {
+  background-color: #fdfaf9;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.appointments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.appointment-card {
+  background: white !important;
+  border-radius: 15px;
+  border: 1px solid #eee;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  transition: all 0.3s ease;
+}
+
+.appointment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(163, 122, 122, 0.1);
+}
+
+.status-badge {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-radius: 50px;
+}
+
+.status-badge.pendiente { background: #fdf5f2; color: #a37a7a; }
+
+.appointment-main-info {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.service-thumb img {
+  width: 65px;
+  height: 65px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.appointment-details-box {
+  border-top: 1px solid #f9f5f2;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+.item-summary { margin-bottom: 18px; }
+
+.item-summary label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #a37a7a !important; 
+  letter-spacing: 1.2px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.summary-info-box strong {
+  display: block;
+  font-size: 1rem;
+  color: #333;
+}
+
+.summary-info-box span {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.appointment-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px dashed #eee;
+}
+
+.btn-cancel {
+  background: none;
+  border: none;
+  color: #cc4444;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+app-citas {
+  display: block;
+  width: 100%;
+}
+
+app-citas .sanbella-booking {
+  background-color: #fdfaf9;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+app-citas .appointments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+app-citas .appointment-card {
+  background: white !important;
+  border-radius: 15px;
+  border: 1px solid #eee;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  transition: all 0.3s ease;
+  display: block;
+}
+
+app-citas .status-badge {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-radius: 50px;
+  z-index: 10;
+}
+
+app-citas .status-badge.pendiente { 
+  background-color: #fdf5f2 !important; 
+  color: #a37a7a !important; 
+}
+
+app-citas .item-summary label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #a37a7a !important; 
+  letter-spacing: 1.2px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+app-citas .summary-info-box strong {
+  display: block;
+  font-size: 1.1rem;
+  color: #333;
+}
+app-citas {
+  display: block;
+  width: 100%;
+}
+
+.sanbella-booking {
+  background-color: #fdfaf9;
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center; 
+}
+
+.booking-content {
+  width: 100%;
+  max-width: 1100px; 
+}
+
+/* Títulos centrados */
+.step-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Grid de Citas Centrado */
+.appointments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 30px;
+  justify-content: center; /* Centra las cards si hay pocas */
+}
+
+/* Card Estilizada */
+.appointment-card {
+  background: white !important;
+  border-radius: 15px;
+  border: 1px solid #eee;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+/* BOTÓN DETALLES (Estilo RESERVAR) */
+.btn-details-premium {
+  background-color: #a37a7a !important; 
+  color: white !important;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn-details-premium:hover {
+  background-color: #b38b82 !important;
+  transform: translateY(-2px);
+}
+
+/* Botón Cancelar  */
+.btn-cancel {
+  background: none;
+  border: none;
+  color: #cc4444;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-cancel:hover {
+  text-decoration: underline;
+}
+
+.item-summary label {
+  color: #a37a7a !important;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+}

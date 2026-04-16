@@ -1,0 +1,116 @@
+.servicios-page {
+  padding: 60px 5%;
+  background-color: #fffaf5; /* Crema muy suave */
+  min-height: 100vh;
+
+  .header-section {
+    text-align: center;
+    margin-bottom: 50px;
+    h2 {
+      font-family: 'Playfair Display', serif;
+      color: #b07d7d;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+    }
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: #d4af37; /*Dorado*/
+      margin: 10px auto;
+    }
+  }
+}
+
+.servicios-grid {
+  display: grid;
+  /*Este comando crea las 3 columnas y se ajusta a 2 si la pantalla es pequeña*/
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.service-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+  transition: transform 0.3s ease;
+  border: 1px solid #fdf2f2;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(176, 125, 125, 0.1);
+  }
+
+  .image-wrapper {
+    height: 200px;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .card-content {
+    padding: 25px;
+    position: relative;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      font-family: 'Montserrat', sans-serif;
+      color: #4a4a4a;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    p {
+      color: #888;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 40px;
+    }
+
+    .card-footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .price {
+        font-weight: 700;
+        color: #b07d7d;
+        font-size: 1.1rem;
+        /*Posición inferior izquierda asegurada por el flex*/
+      }
+
+      .btn-book {
+        background: none;
+        border: 1px solid #b07d7d;
+        color: #b07d7d;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover {
+          background: #b07d7d;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+/* Para que en celulares se vea 1 por fila y no se rompa */
+@media (max-width: 992px) {
+  .servicios-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .servicios-grid { grid-template-columns: 1fr; }
+}
