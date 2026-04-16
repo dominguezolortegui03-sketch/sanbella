@@ -1,0 +1,114 @@
+<div class="booking-container">
+  <div class="stepper">
+    <div class="step" [class.active]="pasoActual >= 1">1</div>
+    <div class="line"></div>
+    <div class="step" [class.active]="pasoActual >= 2">2</div>
+    <div class="line"></div>
+    <div class="step" [class.active]="pasoActual >= 3">3</div>
+    <div class="line"></div>
+    <div class="step" [class.active]="pasoActual >= 4">4</div>
+  </div>
+
+  <div [ngSwitch]="pasoActual" class="step-content">
+    
+    <div *ngSwitchCase="1" class="fade-in">
+      <h2>Selecciona un Servicio</h2>
+      <div class="grid-selection">
+        <button *ngFor="let s of servicios" (click)="seleccionarServicio(s)" class="card-sel">
+          {{ s }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="2" class="fade-in">
+      <h2>¿Cuándo te esperamos?</h2>
+      <input type="date" [(ngModel)]="reserva.fecha" class="input-date">
+
+      <div class="grid-horas">
+        <button *ngFor="let h of horasDisponibles" 
+                (click)="reserva.hora = h; siguientePaso()"
+                [class.selected]="reserva.hora === h" class="hour-card">
+          {{ h }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="3" class="fade-in">
+      <h2>Tus Datos</h2>
+      <div class="resumen-mini">
+        <p>
+            <strong>Servicio:</strong> {{reserva.servicio}} 
+        </p>
+        <p>
+            <strong>Cita:</strong> {{reserva.fecha}} {{reserva.hora}}
+        </p>
+      </div>
+      
+      <div *ngIf="!isLoggedIn" class="login-prompt">
+        <p>Parece que no has iniciado sesión.</p>
+        <button class="btn-login">Iniciar Sesión / Registrarse</button>
+        <hr>
+        <p>O continúa como invitado:</p>
+      </div>
+
+      <div class="form-user">
+        <input type="text" [(ngModel)]="reserva.cliente.nombre" placeholder="Nombre">
+        <input type="text" [(ngModel)]="reserva.cliente.apellido" placeholder="Apellido">
+        <button (click)="siguientePaso()" class="btn-next">Siguiente</button>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="4" class="fade-in">
+  <h2>Validación Final </h2>
+  
+  <div class="form-confirmacion">
+    
+    <div class="seccion-bloqueada">
+      <div class="campo-grupo">
+        <label>Servicio</label>
+        <input type="text" [value]="reserva.servicio" readonly class="input-readonly">
+      </div>
+
+      <div class="row-doble">
+        <div class="campo-grupo">
+          <label>Fecha y Hora</label>
+          <input type="text" [value]="reserva.fecha + ' @ ' + reserva.hora" readonly class="input-readonly">
+        </div>
+        <div class="campo-grupo">
+          <label>Cliente</label>
+          <input type="text" [value]="reserva.cliente.nombre + ' ' + reserva.cliente.apellido" readonly class="input-readonly">
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion-editable">
+      <div class="campo-grupo">
+        <label>Selecciona tu Estilista </label>
+        <select [(ngModel)]="reserva.especialista" class="input-editable">
+          <option value="" disabled selected>Escoge a un profesional...</option>
+          <option *ngFor="let pro of getEstilistasDisponibles()" [value]="pro">
+            {{ pro }}
+          </option>
+        </select>
+      </div>
+
+      <div class="campo-grupo">
+        <label>Indicaciones adicionales (Opcional)</label>
+        <textarea 
+          [(ngModel)]="reserva.notas" 
+          placeholder="Ej: Alergias, preferencias de color, etc." 
+          class="input-editable"
+          rows="3"></textarea>
+      </div>
+    </div>
+
+    <button class="btn-confirmar" [disabled]="!reserva.especialista">
+      CONFIRMAR CITA 
+    </button>
+  </div>
+</div>
+
+  </div>
+  
+  <button *ngIf="pasoActual > 1 && pasoActual < 4" (click)="pasoAnterior()" class="btn-back">Volver</button>
+</div>
