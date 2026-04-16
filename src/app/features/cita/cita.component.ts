@@ -36,6 +36,6 @@ export class CitaComponent {
 
   cancelarCita(id: number) {
     console.log('Cancelando cita:', id);
-    // Aquí iría tu lógica de servicio
+    
   }
 }
