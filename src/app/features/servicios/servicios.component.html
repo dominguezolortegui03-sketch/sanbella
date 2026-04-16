@@ -1,0 +1,24 @@
+<div class="servicios-page">
+  <div class="header-section">
+    <h2>Nuestros Servicios</h2>
+    <div class="divider"></div>
+  </div>
+
+  <div class="servicios-grid">
+    <div class="service-card" *ngFor="let s of servicios">
+      <div class="image-wrapper">
+        <img [src]="s.img" [alt]="s.title">
+      </div>
+      
+      <div class="card-content">
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.desc }}</p>
+        
+        <div class="card-footer">
+          <span class="price">S/ {{ s.price }}</span>
+          <button class="btn-book" (click)="irACitas()">Reservar Cita</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

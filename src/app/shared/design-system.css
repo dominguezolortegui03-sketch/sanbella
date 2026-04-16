@@ -1,0 +1,40 @@
+/* Botones Universales */
+.btn-primary {
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: var(--shadow-suave);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primario-dark);
+  transform: translateY(-2px);
+}
+
+/* Tarjetas con estilo Sanbella */
+.sanbella-card {
+  background: white;
+  border: 1px solid #fdf2f2;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--shadow-suave);
+}
+
+/* Inputs de formulario */
+.sanbella-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #fdf2f2;
+  border-radius: 12px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.sanbella-input:focus {
+  border-color: var(--color-primario);
+}
