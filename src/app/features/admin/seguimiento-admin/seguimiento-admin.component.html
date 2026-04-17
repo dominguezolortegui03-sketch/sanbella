@@ -7,8 +7,12 @@
   <div class="filter-bar">
     <div class="filter-select">
       <i class="bi bi-funnel"></i>
-      <span>Todos los Estados</span>
-      <i class="bi bi-chevron-down ms-auto"></i>
+      <select [(ngModel)]="filtroEstado" (change)="aplicarFiltro()">
+        <option value="Todos">Todos los Estados</option>
+        <option value="Pendiente">Pendiente</option>
+        <option value="Completado">Completado</option>
+        <option value="Cancelado">Cancelado</option>
+      </select>
     </div>
   </div>
 
@@ -22,8 +26,26 @@
       <div class="header-col text-center">Acciones</div>
     </div>
 
-    <div class="empty-state">
-      <p>No se encontraron reservas.</p>
+    <div class="table-body">
+      <div class="table-row" *ngFor="let cita of citasFiltradas">
+        <div class="row-col"><strong>{{ cita.cliente }}</strong></div>
+        <div class="row-col">{{ cita.servicio }}</div>
+        <div class="row-col">{{ cita.fecha }}</div>
+        <div class="row-col">{{ cita.especialista }}</div>
+        <div class="row-col">
+          <span class="status-badge" [ngClass]="cita.estado.toLowerCase()">
+            {{ cita.estado }}
+          </span>
+        </div>
+        <div class="row-col text-center actions">
+          <button title="Ver Detalle"><i class="bi bi-eye"></i></button>
+          <button title="Más Opciones"><i class="bi bi-three-dots-vertical"></i></button>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="citasFiltradas.length === 0">
+        <p>No se encontraron reservas para el estado: {{ filtroEstado }}</p>
+      </div>
     </div>
   </div>
 </div>

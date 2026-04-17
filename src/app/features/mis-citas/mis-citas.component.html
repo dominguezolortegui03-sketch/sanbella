@@ -1,1 +1,41 @@
-<p>mis-citas works!</p>
+<div class="panel-container">
+  <header class="panel-header">
+    <h1>Mi Panel</h1>
+    <p>Bienvenido de nuevo, Jesus Dominguez</p>
+  </header>
+
+  <section class="citas-section">
+    <h2>Próximas Citas</h2>
+    <div class="citas-grid">
+      <div *ngFor="let cita of citas" class="cita-card">
+
+        <div class="cita-status" [ngClass]="cita.status">
+          {{ cita.statusLabel }}
+        </div>
+
+        <div class="cita-body">
+          <div class="info-group">
+            <span class="label">Servicio</span>
+            <span class="value">{{ cita.servicio }}</span>
+          </div>
+
+          <div class="info-group">
+            <span class="label">Personal</span>
+            <span class="value">{{ cita.personal }}</span>
+          </div>
+
+          <div class="info-group">
+            <span class="label">Fecha y Hora</span>
+            <span class="value">{{ cita.fecha }}</span>
+          </div>
+        </div>
+
+        <div class="cita-actions">
+          <button class="btn-detail" (click)="verDetalle(cita.id)">Ver Detalle</button>
+          <button class="btn-cancel" (click)="cancelarCita(cita.id)">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>

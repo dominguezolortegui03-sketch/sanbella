@@ -1,7 +1,7 @@
 <div class="gestion-container">
   <header class="header-section">
     <h1>Gestión de Servicios</h1>
-    <button class="btn-agregar">
+    <button class="btn-agregar" (click)="abrirModal()">
       <i class="bi bi-plus"></i> Agregar Servicio
     </button>
   </header>
@@ -19,20 +19,74 @@
           </tr>
         </thead>
         <tbody>
-          @for (servicio of servicios; track servicio.nombre) {
+          @for (servicio of serviciosPaginados; track servicio.id) {
             <tr>
               <td>{{ servicio.nombre }}</td>
               <td>{{ servicio.categoria }}</td>
               <td>{{ servicio.duracion }}</td>
               <td>{{ servicio.precio }}</td>
               <td class="acciones-cell">
-                <button class="btn-icon edit"><i class="bi bi-pencil-square"></i></button>
-                <button class="btn-icon delete"><i class="bi bi-trash"></i></button>
+                <button class="btn-icon edit" (click)="abrirModal(servicio)">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn-icon delete" (click)="eliminarServicio(servicio.id)">
+                  <i class="bi bi-trash"></i>
+                </button>
               </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="text-center">No hay servicios registrados.</td>
             </tr>
           }
         </tbody>
       </table>
     </div>
+
+    <div class="pagination-bar" *ngIf="totalPaginas > 1">
+      <button [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">Anterior</button>
+      <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+      <button [disabled]="paginaActual === totalPaginas" (click)="cambiarPagina(paginaActual + 1)">Siguiente</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ esEdicion ? 'Editar Servicio' : 'Nuevo Servicio' }}</h2>
+      <button class="close-btn" (click)="cerrarModal()">&times;</button>
+    </div>
+    
+    <form (ngSubmit)="guardarServicio()">
+      <div class="form-grid">
+        <div class="field">
+          <label>Nombre del Servicio</label>
+          <input type="text" name="nombre" [(ngModel)]="formServicio.nombre" required placeholder="Ej. Manicure">
+        </div>
+        <div class="field">
+  <label>Categoría</label>
+  <select name="categoria" [(ngModel)]="formServicio.categoria" required>
+    <option value="" disabled selected>Seleccione una categoría</option>
+    @for (cat of categoriasDisponibles; track cat) {
+      <option [value]="cat">{{ cat }}</option>
+    }
+  </select>
+</div>
+        <div class="field">
+          <label>Duración</label>
+          <input type="text" name="duracion" [(ngModel)]="formServicio.duracion" required placeholder="Ej. 60 min">
+        </div>
+        <div class="field">
+          <label>Precio</label>
+          <input type="text" name="precio" [(ngModel)]="formServicio.precio" required>
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+        <button type="submit" class="btn-save">{{ esEdicion ? 'Actualizar' : 'Guardar' }}</button>
+      </div>
+    </form>
   </div>
 </div>

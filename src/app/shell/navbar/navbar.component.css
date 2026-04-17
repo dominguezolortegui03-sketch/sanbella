@@ -60,3 +60,40 @@
   background-color: var(--primary-purple);
   border-bottom: 3px solid var(--accent-gold); /* El toque dorado */
 }
+/* Controlar el tamaño del logo */
+.logo-nav {
+  height: 60px;       /* Un poco menos que los 80px del nav para dejar margen */
+  width: auto;        /* Mantiene la proporción */
+  object-fit: contain;
+  display: block;
+}
+
+.navbar-shell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;      /* Bajé un poco el padding lateral para que quepan más links */
+  height: 80px;
+  background-color: var(--primary-purple);
+  color: var(--pure-white);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 3px solid var(--accent-gold); /* Integrando el borde dorado */
+}
+
+/* Corregir el color de los links del menú */
+.menu a {
+  text-decoration: none;
+  color: var(--pure-white) !important; /* Forzar blanco para que resalte en el púrpura */
+  font-family: var(--main-font);
+  font-weight: 700;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.menu a:hover, .menu a.active {
+  color: var(--accent-gold) !important;
+  border-bottom: 2px solid var(--accent-gold);
+}

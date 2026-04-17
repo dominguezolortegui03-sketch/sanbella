@@ -9,7 +9,7 @@
         <i class="bi bi-activity"></i>
       </div>
       <h3>Total Reservas</h3>
-      <span class="stat-number">0</span>
+      <span class="stat-number">{{ resumen.totalReservas }}</span>
     </div>
 
     <div class="stat-card main-stat">
@@ -17,17 +17,39 @@
         <i class="bi bi-bar-chart-line"></i>
       </div>
       <h3>Ingresos Totales</h3>
-      <span class="stat-number">$0</span>
+      <span class="stat-number">${{ resumen.ingresosTotales }}</span>
     </div>
 
     <div class="stat-card detail-stat">
       <h3>Servicios Top</h3>
-      <p class="no-data">No hay datos disponibles</p>
+      @if (resumen.serviciosTop.length > 0) {
+        <ul class="data-list">
+          @for (item of resumen.serviciosTop; track item.nombre) {
+            <li>
+              <span>{{ item.nombre }}</span>
+              <span class="count">{{ item.cantidad }}</span>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="no-data">No hay datos disponibles</p>
+      }
     </div>
 
     <div class="stat-card detail-stat">
       <h3>Horas Pico</h3>
-      <p class="no-data">No hay datos disponibles</p>
+      @if (resumen.horasPico.length > 0) {
+        <ul class="data-list">
+          @for (pico of resumen.horasPico; track pico.hora) {
+            <li>
+              <span>{{ pico.hora }}</span>
+              <span class="tag">{{ pico.nivel }}</span>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="no-data">No hay datos disponibles</p>
+      }
     </div>
   </div>
 </div>
