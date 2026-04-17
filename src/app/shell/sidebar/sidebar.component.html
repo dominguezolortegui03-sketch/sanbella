@@ -1,0 +1,18 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h3>Panel Admin</h3>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul>
+            @for (option of menuOptions;track option.label){
+            <li>
+                <a [routerLink]="option.route" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+                    <img [src]="option.icon" [alt]="option.label" class="sidebar-icon">
+                    <span class="label">{{option.label}}</span>
+                </a>
+            </li>
+            }
+            </ul>
+    </nav>
+</aside>
