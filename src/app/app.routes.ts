@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-
 import { InicioComponent } from './features/inicio/inicio.component'; //trae la ruta de inicio
 import { ServiciosComponent } from './features/servicios/servicios.component'; // trae la ruta de servicios
 import { ReservaComponent } from './features/reserva/reserva.component';
