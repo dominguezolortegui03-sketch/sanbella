@@ -1,0 +1,84 @@
+.gestion-container {
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.header-section {
+  margin-bottom: 25px;
+}
+
+.header-section h1 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+/* Botón Agregar con el degradado de tu imagen */
+.btn-agregar {
+  background: #e0b0ff; /* Lila suave */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.btn-agregar:hover {
+  opacity: 0.8;
+}
+
+/* Tarjeta y Tabla */
+.table-card {
+  background: #fdf8ff; /* Fondo lila muy tenue */
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid #f0e6f5;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 12px;
+  color: #333;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+td {
+  padding: 12px;
+  color: #555;
+  font-size: 0.9rem;
+  border-bottom: 1px solid transparent; /* Para mantener alineación */
+}
+
+/* Acciones */
+.acciones-cell {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.btn-icon.edit:hover { color: #4a90e2; }
+.btn-icon.delete:hover { color: #e74c3c; }
+
+.text-center { text-align: center; }

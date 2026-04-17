@@ -1,0 +1,111 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  left: 0;
+  top:0;
+  z-index: 1000;
+  background: #ffffffc8; /* Negro suave */
+  flex-grow: 1;
+  color: #fff;
+  display: flexbox;
+  flex-direction: column;
+  box-shadow: 4px 0 10px rgb(252, 251, 251);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Encabezado */
+.sidebar-brand {
+  padding: 30px 20px;
+  text-align: center;
+  border-bottom: 1px solid #fffefe;
+}
+
+.sidebar-brand h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  color: #d4af37; /* Dorado para elegancia */
+}
+
+.sidebar-brand span {
+  font-size: 0.75rem;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+/* Navegación */
+.sidebar-nav {
+  flex-grow: 1;
+  padding: 30px 0;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li a {
+  display: flex;
+  align-items: center;
+  padding: 10px 2px;
+  color: #0a0101cd;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.sidebar-nav li a:hover {
+  background: #7e15b3a7;
+  color: #fff;
+}
+
+/* Estado Activo (Donde está el usuario) */
+.active-link {
+  background: #252525;
+  color: #d4af37 !important; /* Dorado */
+  border-left: 4px solid #d4af37 !important;
+}
+
+.icon {
+  margin-right: 15px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Botón inferior */
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid #333;
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid #444;
+  color: #ff4d4d; /* Rojo suave */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.btn-logout:hover {
+  background: #ff4d4d;
+  color: #fff;
+  border-color: #ff4d4d;
+}
+.sidebar-icon {
+  width: 20px;   /* Ajusta según el diseño de tu sidebar */
+  height: 20px;
+  object-fit: contain;
+  margin-right: 10px;
+}

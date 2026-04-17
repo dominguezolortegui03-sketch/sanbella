@@ -1,12 +1,19 @@
 /* 1. VARIABLES DE MARCA */
 :root {
-  --color-primario: #b07d7d;
-  --color-primario-hover: #966666;
-  --color-fondo-pastel: #fffaf5;
-  --color-borde: #fdf2f2;
-  --fuente-principal: 'Montserrat', sans-serif;
-  --fuente-logo: 'Playfair Display', serif;
-  --sombra-sanbella: 0 10px 20px rgba(176, 125, 125, 0.08);
+  /* Paleta Sanbella */
+  --primary-purple: #e4bcff;    /* Morado principal */
+  --accent-gold: #ffd000;      /* Dorado para detalles/botones */
+  --neutral-gray: #757575;     /* Plomo/Gris para textos secundarios */
+  --light-gray: #F5F5F5;       /* Plomo muy clarito para fondos */
+  --pure-white: #FFFFFF;       /* Blanco para contrastes */
+  
+  /* Semántica (Para qué sirve cada color) */
+  --bg-main: var(--pure-white);
+  --text-main: #212121;
+  --text-muted: var(--neutral-gray);
+
+  /*Tipo de letra*/
+  --main-font: 'Quicksand', sans-serif;
 }
 
 /* 2. RESET Y BASE */
@@ -17,7 +24,7 @@
 }
 
 body {
-  font-family: var(--fuente-principal);
+  font-family: var(--main-font);
   background-color: #fdfdfd;
   color: #444;
   line-height: 1.5;
@@ -25,22 +32,25 @@ body {
 
 /* 3. COMPONENTES COMPARTIDOS */
 .btn-sanbella {
-  background-color: var(--color-primario);
-  color: white;
+  background-color: var(--accent-gold);
+  color: var(--neutral-gray);
   border: none;
   padding: 12px 25px;
   border-radius: 50px;
-  font-weight: 600;
+  font-family: var(--main-font);
+  font-weight: 700;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
   cursor: pointer;
-  transition: 0.3s ease;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .btn-sanbella:hover {
-  background-color: var(--color-primario-hover);
-  transform: translateY(-2px);
+  background-color: #ffd95c;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
 .sanbella-card {
@@ -97,4 +107,8 @@ body {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.link-sanbella {
+  color: var(--accent-gold)
 }

@@ -1,0 +1,78 @@
+.seguimiento-container {
+  padding: 10px;
+  font-family: 'Inter', sans-serif;
+}
+
+.module-header h1 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.module-header p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 25px;
+}
+
+/* Estilo del Filtro */
+.filter-bar {
+  margin-bottom: 20px;
+}
+
+.filter-select {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 15px;
+  width: 100%;
+  max-width: 900px; /* Ajustado para que se vea largo como en tu imagen */
+  cursor: pointer;
+  color: #444;
+  font-size: 0.9rem;
+}
+
+.filter-select i {
+  margin-right: 10px;
+  color: #666;
+}
+
+.ms-auto {
+  margin-left: auto;
+}
+
+/* Estilo de la Tabla/Card */
+.table-card {
+  background: #fdf8ff; /* Fondo ligeramente rosado/lila de la imagen */
+  border-radius: 12px;
+  border: 1px solid #f0e6f5;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.table-header {
+  display: flex;
+  padding: 20px;
+  border-bottom: 1px solid #f0e6f5;
+  font-weight: 700;
+  color: #333;
+}
+
+.header-col {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.empty-state {
+  padding: 40px 20px;
+  text-align: left; /* Alineado a la izquierda según la imagen */
+  color: #666;
+  font-size: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}

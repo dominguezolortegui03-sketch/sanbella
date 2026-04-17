@@ -1,0 +1,57 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* Degradado sutil de fondo para que no sea un color plano aburrido */
+  background: linear-gradient(135deg, var(--light-gray) 0%, #e0e0e0 100%);
+  padding: 40px 20px;
+}
+
+.register-card {
+  background-color: var(--pure-white);
+  padding: 45px;
+  border-radius: 24px;
+  /* Sombra multinivel para dar efecto de "elevación" */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05), 0 20px 48px rgba(106, 27, 154, 0.1);
+  width: 100%;
+  max-width: 500px;
+  border-top: 8px solid var(--primary-purple); /* Línea de marca arriba */
+  text-align: center;
+}
+
+.register-card h2 {
+  color: var(--primary-purple);
+  font-size: 2rem;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: var(--neutral-gray);
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+/* Contenedor de inputs para que respiren */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Nombre y Apellido en la misma fila */
+  gap: 15px;
+  text-align: left;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  margin-left: 4px;
+  font-weight: 700;
+  color: var(--primary-purple); /* Morado para los labels para que resalten */
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

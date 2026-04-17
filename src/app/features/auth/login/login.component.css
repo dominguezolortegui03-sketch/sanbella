@@ -1,61 +1,59 @@
-/* Contenedor que centra la tarjeta en pantalla */
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 80px);
-  background-color: var(--color-fondo-pastel);
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--light-gray) 0%, #e0e0e0 100%);
+  padding: 20px;
 }
 
-/* Tarjeta de login */
-.auth-card {
+/* Nota: La clase .sanbella-card ya trae el fondo blanco y sombra desde styles.css */
+.sanbella-card {
   width: 100%;
-  max-width: 400px;
-  background: white;
-  padding: 40px;
-  border-radius: 30px;
-  box-shadow: 0 15px 35px rgba(176, 125, 125, 0.1);
+  max-width: 400px; /* Un poco más angosta que el registro para que se vea estilizada */
   text-align: center;
 }
 
-.auth-title {
-  color: var(--color-primario);
-  font-family: var(--fuente-logo);
-  font-size: 2rem;
-  margin-bottom: 10px;
+.sanbella-card h2 {
+  color: var(--primary-purple);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
 }
 
-.auth-subtitle {
-  color: #888;
-  font-size: 0.9rem;
+.subtitle {
+  color: var(--neutral-gray);
   margin-bottom: 30px;
+  font-size: 0.95rem;
 }
 
-/* Alineación de etiquetas y campos */
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.form-group {
   text-align: left;
+  margin-bottom: 20px;
 }
 
-.auth-form label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--color-primario);
-  margin-bottom: 5px;
+.form-group label {
   display: block;
-}
-
-/* Footer del login */
-.auth-footer {
-  margin-top: 25px;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--primary-purple);
   font-size: 0.85rem;
-  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.auth-footer a {
-  color: var(--color-primario);
+.forgot-password {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.forgot-password a {
+  color: var(--neutral-gray);
+  font-size: 0.8rem;
   text-decoration: none;
-  font-weight: 600;
+}
+
+.forgot-password a:hover {
+  color: var(--primary-purple);
+  text-decoration: underline;
 }

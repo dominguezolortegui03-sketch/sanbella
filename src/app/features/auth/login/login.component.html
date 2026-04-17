@@ -1,32 +1,31 @@
-<div class="auth-container fade-in">
-  <div class="auth-card">
-    <h2 class="auth-title">Identifícate ✨</h2>
-    <p class="auth-subtitle">Ingresa tus credenciales de Sanbella</p>
+<div class="auth-container">
+  <div class="sanbella-card">
+    <h2>Bienvenido a Sanbella</h2>
+    <p class="subtitle">Ingresa tus credenciales para continuar</p>
 
-    <div class="auth-form">
+    <form class="login-form">
       <div class="form-group">
         <label>Correo Electrónico</label>
-        <input type="email" 
-               [(ngModel)]="emailIngresado" 
-               placeholder="test@sanbella.com" 
-               class="input-sanbella">
+        <input type="email" class="input-sanbella" placeholder="correo@sanbella.com">
       </div>
 
       <div class="form-group">
         <label>Contraseña</label>
-        <input type="password" 
-               [(ngModel)]="passwordIngresado" 
-               placeholder="••••••••" 
-               class="input-sanbella">
+        <input type="password" class="input-sanbella" placeholder="********">
       </div>
 
-      <button (click)="onLogin()" class="btn-sanbella w-100 mt-20">
-        ENTRAR
+      <div class="forgot-password">
+        <a href="#">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <button type="submit" class="btn-sanbella">
+        INICIAR SESIÓN
       </button>
+    </form>
 
-      <div class="auth-footer">
-        <p>¿Prueba de usuario? Usa el correo de test arriba v:</p>
-      </div>
-    </div>
+    <p class="register-link" style="margin-top: 25px;">
+      ¿Aún no tienes cuenta? 
+      <a routerLink="/register" class="link-sanbella">Regístrate gratis</a>
+    </p>
   </div>
 </div>

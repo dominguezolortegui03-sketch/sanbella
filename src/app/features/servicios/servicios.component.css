@@ -87,22 +87,6 @@
         font-size: 1.1rem;
         /*Posición inferior izquierda asegurada por el flex*/
       }
-
-      .btn-book {
-        background: none;
-        border: 1px solid #b07d7d;
-        color: #b07d7d;
-        padding: 6px 15px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        cursor: pointer;
-        transition: 0.3s;
-
-        &:hover {
-          background: #b07d7d;
-          color: white;
-        }
-      }
     }
   }
 }

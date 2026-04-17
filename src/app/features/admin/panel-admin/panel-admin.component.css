@@ -1,0 +1,40 @@
+.admin-layout {
+  display: flex; /* Alinea Sidebar y Main horizontalmente */
+  height: calc(100vh - 80px); /* Ajusta los 80px según la altura de tu Navbar */
+  overflow: hidden; /* Evita que toda la página haga scroll */
+}
+
+.sidebar-wrapper {
+  width: 260px; /* Ancho fijo del sidebar */
+  flex-shrink: 0; /* Evita que el sidebar se aplaste */
+  border-right: 1px solid #eee;
+  height: 100%;
+}
+
+.main-content {
+  flex-grow: 1; /* Ocupa todo el espacio del cuadro rojo */
+  overflow-y: auto; /* Solo el contenido interno tendrá scroll si es muy largo */
+  background-color: #fafbfc; /* Color de fondo sutil */
+  padding: 30px; /* Espaciado interno para que el contenido no pegue a los bordes */
+}
+/* Este es el contenedor PADRE */
+.admin-container {
+  display: flex; /* Esto pone el sidebar y el contenido uno al lado del otro */
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Ajuste para el layout de la derecha (donde va el "hola" y el contenido) */
+.main-layout {
+  flex-grow: 1; /* Hace que ocupe todo el espacio restante */
+  display: flex;
+  flex-direction: column; /* Pone el header arriba y el router-outlet abajo */
+  height: 100vh;
+  overflow-y: auto; /* Permite scroll solo en esta parte si el contenido es largo */
+  background-color: #fafbfc;
+}
+
+.dynamic-content {
+  padding: 30px;
+}
