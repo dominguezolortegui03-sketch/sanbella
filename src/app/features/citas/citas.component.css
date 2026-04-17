@@ -4,72 +4,25 @@
   text-align: center;
 }
 
-.grid-layout {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 15px;
-}
-
-.form-container {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  text-align: left;
-}
-
-/* Paso 3: Login box */
 .login-box {
   padding: 30px;
-  border: 2px dashed var(--color-primario);
+  border: 2px dashed var(--primary-purple); /* Corregido variable */
+  border-radius: 15px;
 }
 
-.separator {
-  margin: 15px 0;
-  position: relative;
-  text-align: center;
-}
-
-.separator::before {
-  content: ""; position: absolute; top: 50%; left: 0;
-  width: 100%; height: 1px; background: #eee;
-}
-
-.separator span {
-  background: white; padding: 0 10px; color: #999;
-  position: relative; z-index: 2; font-size: 0.8rem;
-}
-
-/* Paso 4: Ticket de confirmación */
+/* Ticket de confirmación - Estilo específico */
 .confirmation-card {
-  border: 2px solid var(--color-fondo-pastel);
+  border: 2px solid var(--primary-light);
   padding: 30px !important;
-  background: linear-gradient(to bottom, #ffffff, #fff9f9);
+  background: linear-gradient(to bottom, #ffffff, #fffdfd);
 }
 
 .resumen-row {
-  display: flex; justify-content: space-between;
-  padding: 10px 0; border-bottom: 1px solid var(--color-borde);
+  display: flex; 
+  justify-content: space-between;
+  padding: 12px 0; 
+  border-bottom: 1px solid var(--border-color);
 }
 
-.resumen-row .label { color: #888; }
+.resumen-row .label { color: var(--neutral-gray); }
 .resumen-row .value { font-weight: 700; color: #444; }
-
-.select-custom {
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b07d7d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1em;
-}
-
-/* Utilidades rápidas */
-.w-100 { width: 100%; }
-.mt-20 { margin-top: 20px; }
-.mt-30 { margin-top: 30px; }
-.mb-20 { margin-bottom: 20px; }

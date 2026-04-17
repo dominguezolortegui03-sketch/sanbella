@@ -45,4 +45,6 @@ citas: Cita[] = [
   cancelarCita(id: number) {
     console.log('Cancelar cita:', id);
   }
+
 }
+

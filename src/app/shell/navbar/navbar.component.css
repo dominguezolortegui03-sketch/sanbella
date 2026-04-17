@@ -5,95 +5,85 @@
   padding: 0 10%;
   height: 80px;
   background-color: var(--primary-purple);
-  color: var(--pure-white);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-bottom: 3px solid var(--accent-gold);
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.navbar-shell a {
-  font-family: var(--main-font);
-  font-size: 1.1rem;      /* Aumenta el tamaño (1rem es lo normal) */
-  font-weight: 700;       /* La hace gruesa (Bold) */
-  text-transform: capitalize; /* Asegura que la primera sea mayúscula */
-  padding: 0.5rem 1rem;   /* Les da espacio para que no estén pegados */
-  color: var(--pure-white);
-  transition: all 0.3s ease;
+/* Contenedor del logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
-.navbar-shell a:hover {
-  transform: scale(1.05); /* Un pequeño efecto de crecimiento al pasar el mouse */
-  color: var(--accent-gold);
-}
-
-.logo {
-  font-family: var(--fuente-logo);
-  font-size: 1.6rem;
-  color: var(--color-primario);
-  font-weight: bold;
+.logo-img {
+  height: 50px; /* Ajusta según el tamaño de tu imagen */
+  width: auto;
+  object-fit: contain;
 }
 
 .menu {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
+  margin-left: auto; /* Esto empuja el menú a la derecha si el logo está a la izquierda */
 }
 
 .menu a {
   text-decoration: none;
-  color: #666;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-.menu a:hover, .active {
-  color: var(--color-primario) !important;
-}
-
-.active {
-  border-bottom: 2px solid var(--color-primario);
-  padding-bottom: 5px;
-}
-
-.navbar {
-  background-color: var(--primary-purple);
-  border-bottom: 3px solid var(--accent-gold); /* El toque dorado */
-}
-/* Controlar el tamaño del logo */
-.logo-nav {
-  height: 60px;       /* Un poco menos que los 80px del nav para dejar margen */
-  width: auto;        /* Mantiene la proporción */
-  object-fit: contain;
-  display: block;
-}
-
-.navbar-shell {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 5%;      /* Bajé un poco el padding lateral para que quepan más links */
-  height: 80px;
-  background-color: var(--primary-purple);
   color: var(--pure-white);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  border-bottom: 3px solid var(--accent-gold); /* Integrando el borde dorado */
-}
-
-/* Corregir el color de los links del menú */
-.menu a {
-  text-decoration: none;
-  color: var(--pure-white) !important; /* Forzar blanco para que resalte en el púrpura */
-  font-family: var(--main-font);
   font-weight: 700;
-  font-size: 1rem;
   transition: 0.3s;
 }
 
-.menu a:hover, .menu a.active {
-  color: var(--accent-gold) !important;
-  border-bottom: 2px solid var(--accent-gold);
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  background: none;
+  border: none;
+  gap: 5px;
+  margin-left: auto; /* En móvil, empuja el botón hamburguesa a la derecha */
+}
+
+.hamburger .bar {
+  width: 25px;
+  height: 3px;
+  background-color: var(--pure-white);
+  transition: 0.3s;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .menu {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-purple);
+    flex-direction: column;
+    text-align: center;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    border-bottom: 3px solid var(--accent-gold);
+    margin-left: 0; /* Reset en móvil */
+  }
+
+  .menu.active {
+    max-height: 500px; /* Ajustado para quepan los botones nuevos */
+  }
+
+  .menu a, .menu button {
+    padding: 15px;
+    width: 100%;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
 }

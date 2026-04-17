@@ -1,5 +1,6 @@
-import { Component } from '@angular/common';
+
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
 interface ReporteData {
   totalReservas: number;
@@ -20,7 +21,7 @@ export class ReporteAdminComponent {
   resumen: ReporteData = {
     totalReservas: 21, // Cambia a un número > 0 para ver el cambio
     ingresosTotales: 5000,
-    serviciosTop: [corte], // Ejemplo: { nombre: 'Manicure', cantidad: 10 }
-    horasPico: [10 am]    // Ejemplo: { hora: '10:00 AM', nivel: 'Alta' }
+    serviciosTop: [], // Ejemplo: { nombre: 'Manicure', cantidad: 10 }
+    horasPico: []    // Ejemplo: { hora: '10:00 AM', nivel: 'Alta' }
   };
 }

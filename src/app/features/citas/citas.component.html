@@ -13,22 +13,27 @@
   <div [ngSwitch]="pasoActual" class="step-content">
     
     <div *ngSwitchCase="1" class="fade-in">
-      <h2>Selecciona un Servicio</h2>
-      <div class="grid-layout">
+      <h2 class="text-primary">Selecciona un Servicio</h2>
+      <p class="subtitle">Elige el tratamiento ideal para ti</p>
+      <div class="grid-layout mt-20">
         <div *ngFor="let s of servicios" 
              (click)="seleccionarServicio(s)" 
              class="sanbella-card btn-selection">
-          {{ s }}
+          <strong>{{ s }}</strong>
         </div>
       </div>
     </div>
 
     <div *ngSwitchCase="2" class="fade-in">
-      <h2>¿Cuándo vienes?</h2>
-      <div class="calendar-wrapper">
-        <input type="date" [(ngModel)]="reserva.fecha" class="input-sanbella">
+      <h2 class="text-primary">¿Cuándo vienes?</h2>
+      <div class="form-container mt-20">
+        <div class="form-group">
+          <label>Fecha de la cita</label>
+          <input type="date" [(ngModel)]="reserva.fecha" class="input-sanbella">
+        </div>
       </div>
-      <div class="grid-layout mt-20">
+      
+      <div class="grid-layout mt-30">
         <div *ngFor="let h of horasDisponibles" 
              (click)="reserva.hora = h; siguientePaso()" 
              class="sanbella-card btn-selection">
@@ -38,91 +43,84 @@
     </div>
 
     <div *ngSwitchCase="3" class="fade-in">
-      <h2>Tus Datos</h2>
-      <div class="form-container">
+      <h2 class="text-primary">Tus Datos</h2>
+      <div class="form-container mt-20">
         
         <div *ngIf="isLogged" class="fade-in">
-          <div class="sanbella-card mb-20 info-session">
-            <p>Sesión activa como:</p>
-            <strong>{{ usuarioLogueado.nombre }} {{ usuarioLogueado.apellido }}</strong>
-          </div>
-          
-          <div class="form-group">
-            <label class="label-hint">WhatsApp de contacto:</label>
-            <input type="text" [value]="usuarioLogueado.telefono" readonly class="input-readonly">
-            <p class="text-info">Utilizaremos estos datos para tu reserva.</p>
-            <button (click)="siguientePaso()" class="btn-sanbella w-100">Continuar al último paso</button>
+          <div class="sanbella-card mb-20">
+            <p class="subtitle">Sesión activa como:</p>
+            <h3 class="text-primary">{{ usuarioLogueado.nombre }} {{ usuarioLogueado.apellido }}</h3>
+            <hr class="mt-20 mb-20" style="opacity: 0.1;">
+            <div class="form-group">
+              <label>WhatsApp de contacto</label>
+              <input type="text" [value]="usuarioLogueado.telefono" readonly class="input-sanbella" style="background: #f9f9f9; cursor: not-allowed;">
+            </div>
+            <button (click)="siguientePaso()" class="btn-sanbella w-100">Continuar</button>
           </div>
         </div>
 
         <div *ngIf="!isLogged" class="fade-in">
           <div class="sanbella-card login-box">
-            <p>Para agendar tu cita, necesitamos identificarte.</p>
-            <div class="auth-buttons">
-              <button class="btn-sanbella w-100" (click)="irALogin()">Iniciar Sesión</button>
-              <div class="separator"><span>o</span></div>
-              <button class="btn-sanbella-outline w-100" (click)="irARegistro()">Crear Cuenta Nueva</button>
-            </div>
+            <p class="mb-20">Para agendar tu cita en <strong>Sanbella</strong>, necesitamos identificarte.</p>
+            <button class="btn-sanbella w-100" (click)="irALogin()">Iniciar Sesión</button>
+            <div class="separator"><span>o también</span></div>
+            <button class="btn-sanbella w-100" style="background: var(--primary-light); color: white !important;" (click)="irARegistro()">Crear Cuenta Nueva</button>
           </div>
         </div>
       </div>
     </div>
 
     <div *ngSwitchCase="4" class="fade-in">
-  <h2 class="auth-title">Casi lista... ✨</h2>
-  <p class="auth-subtitle">Confirma los detalles de tu cita de belleza</p>
+      <h2 class="text-primary">Casi lista... ✨</h2>
+      <p class="subtitle">Confirma los detalles de tu cita de belleza</p>
 
-  <div class="form-container">
-    <div class="sanbella-card confirmation-card">
-      
-      <div class="ticket-header">
-        <span class="icon-sparkle">✨</span>
-        <h3>Resumen de Reserva</h3>
-      </div>
+      <div class="form-container mt-20">
+        <div class="sanbella-card confirmation-card">
+          <div class="ticket-header mb-20">
+            <h3 class="text-primary">Resumen de Reserva</h3>
+          </div>
 
-      <div class="ticket-body">
-        <div class="resumen-row">
-          <span class="label">Servicio:</span>
-          <span class="value">{{ reserva.servicio }}</span>
+          <div class="ticket-body">
+            <div class="resumen-row">
+              <span class="label">Servicio</span>
+              <span class="value">{{ reserva.servicio }}</span>
+            </div>
+            <div class="resumen-row">
+              <span class="label">Fecha y Hora</span>
+              <span class="value">{{ reserva.fecha | date:'dd/MM/yyyy' }} - {{ reserva.hora }}</span>
+            </div>
+            <div class="resumen-row">
+              <span class="label">Cliente</span>
+              <span class="value">{{ usuarioLogueado.nombre }} {{ usuarioLogueado.apellido }}</span>
+            </div>
+          </div>
+
+          <div class="form-group mt-30">
+            <label>¿Quién te atenderá?</label>
+            <select [(ngModel)]="reserva.especialista" class="select-custom">
+              <option value="" disabled selected>Selecciona a tu estilista...</option>
+              <option value="Valeria">Valeria - Experta en Color</option>
+              <option value="Camila">Camila - Especialista en Corte</option>
+              <option value="Luciana">Luciana - Manicura & Spa</option>
+            </select>
+          </div>
+
+          <button (click)="confirmarCita()" 
+                  [disabled]="!reserva.especialista"
+                  class="btn-sanbella w-100 mt-20">
+            CONFIRMAR MI CITA
+          </button>
+          <p class="subtitle mt-20" style="font-size: 0.8rem;">Te enviaremos un recordatorio por WhatsApp.</p>
         </div>
-        <div class="resumen-row">
-          <span class="label">Fecha y Hora:</span>
-          <span class="value">{{ reserva.fecha | date:'dd/MM/yyyy' }} a las {{ reserva.hora }}</span>
-        </div>
-        <div class="resumen-row">
-          <span class="label">Cliente:</span>
-          <span class="value">{{ reserva.cliente.nombre }} {{ reserva.cliente.apellido }}</span>
-        </div>
       </div>
-
-      <div class="divider-dashed"></div>
-
-      <div class="form-group text-left mt-20">
-        <label class="label-hint">¿Quién te atenderá?</label>
-        <select [(ngModel)]="reserva.especialista" class="input-sanbella select-custom">
-          <option value="" disabled selected>Selecciona a tu estilista...</option>
-          <option value="Valeria">Valeria - Experta en Color</option>
-          <option value="Camila">Camila - Especialista en Corte</option>
-          <option value="Luciana">Luciana - Manicura & Spa</option>
-        </select>
-      </div>
-
-      <button (click)="confirmarCita()" 
-              [disabled]="!reserva.especialista"
-              class="btn-sanbella w-100 mt-30">
-        CONFIRMAR MI CITA
-      </button>
-      
-      <p class="disclaimer">Al confirmar, te enviaremos un recordatorio por WhatsApp.</p>
     </div>
-  </div>
-</div>
 
   </div>
 
   <button *ngIf="pasoActual > 1 && pasoActual < 4" 
           (click)="pasoAnterior()" 
-          class="btn-sanbella-outline mt-30">
-    ← Volver
+          class="btn-sanbella mt-30" 
+          style="background: transparent; color: var(--neutral-gray) !important; box-shadow: none; border: 1px solid #ddd;">
+    ← Volver al paso anterior
   </button>
 </div>

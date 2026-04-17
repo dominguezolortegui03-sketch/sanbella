@@ -1,13 +1,20 @@
 <nav class="navbar-shell">
-  <img src="/assets/inicio/Sanbella.png" alt="Sanbella logo" class="logo-nav">
-  <div class="menu">
-    <a routerLink="/inicio" routerLinkActive="active">Inicio</a>
-    <a routerLink="/servicios" routerLinkActive="active">Servicios</a>
-    <a routerLink="/mis-citas" routerLinkActive="active">Mis Citas</a>
+  <a routerLink="/inicio" class="logo-container">
+    <img src="assets/inicio/Sanbella.png" alt="Sanbella Logo" class="logo-img">
+  </a>
 
-    <a routerLink="/panel-admin" routerLinkActive="active"> Panel Admin </a>
+  <button class="hamburger" (click)="toggleMenu()">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
 
-    <button routerLink="/citas" class="btn-sanbella">RESERVAR AHORA</button>
-    <button routerLink="/login" class="btn-sanbella">INICIAR SESIÓN</button>
+  <div class="menu" [class.active]="isMenuOpen">
+    <a routerLink="/inicio" routerLinkActive="active" (click)="isMenuOpen = false">Inicio</a>
+    <a routerLink="/servicios" routerLinkActive="active" (click)="isMenuOpen = false">Servicios</a>
+    <a routerLink="/mis-citas" routerLinkActive="active" (click)="isMenuOpen = false">Mis Citas</a>
+    <a routerLink="/panel-admin" routerLinkActive="active" (click)="isMenuOpen = false">Administrador</a>
+    <button routerLink="/citas" class="btn-sanbella" (click)="isMenuOpen = false">Reservar</button>
+    <button routerLink="/login" class="btn-sanbella" (click)="isMenuOpen = false">Iniciar Sesión</button>
   </div>
 </nav>
