@@ -1,114 +1,235 @@
-/* 1. VARIABLES DE MARCA */
+/* ==========================================================================
+   1. VARIABLES DE MARCA
+   ========================================================================== */
 :root {
-  /* Paleta Sanbella */
-  --primary-purple: #e4bcff;    /* Morado principal */
-  --accent-gold: #ffd000;      /* Dorado para detalles/botones */
-  --neutral-gray: #757575;     /* Plomo/Gris para textos secundarios */
-  --light-gray: #F5F5F5;       /* Plomo muy clarito para fondos */
-  --pure-white: #FFFFFF;       /* Blanco para contrastes */
+  --primary-purple: #6A1B9A;
+  --primary-light: #cf86ff;
+  --accent-gold: #ffd000;
+  --accent-gold-light: #ffd95c;
+  --neutral-gray: #757575;
+  --light-gray: #F5F5F5;
+  --pure-white: #FFFFFF;
+  --border-color: #eee; /* Nueva variable para bordes suaves */
   
-  /* Semántica (Para qué sirve cada color) */
-  --bg-main: var(--pure-white);
-  --text-main: #212121;
-  --text-muted: var(--neutral-gray);
-
-  /*Tipo de letra*/
+  --shadow-standard: 0 10px 25px rgba(0,0,0,0.05), 0 20px 48px rgba(106, 27, 154, 0.1);
+  --shadow-button: 0 4px 6px rgba(0,0,0,0.1);
   --main-font: 'Quicksand', sans-serif;
 }
 
-/* 2. RESET Y BASE */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ==========================================================================
+   2. RESET Y BASE
+   ========================================================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: var(--main-font);
-  background-color: #fdfdfd;
+  background-color: var(--light-gray);
   color: #444;
   line-height: 1.5;
 }
 
-/* 3. COMPONENTES COMPARTIDOS */
+/* ==========================================================================
+   3. COMPONENTES GLOBALES (CARDS, BTNS, INPUTS)
+   ========================================================================== */
+
+.sanbella-card {
+  background-color: var(--pure-white);
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: var(--shadow-standard);
+  border-top: 8px solid var(--primary-purple);
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+
+.sanbella-card:hover { transform: translateY(-5px); }
+
 .btn-sanbella {
   background-color: var(--accent-gold);
-  color: var(--neutral-gray);
+  color: var(--primary-purple) !important;
   border: none;
   padding: 12px 25px;
   border-radius: 50px;
-  font-family: var(--main-font);
   font-weight: 700;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-button);
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
 }
 
 .btn-sanbella:hover {
-  background-color: #ffd95c;
+  background-color: var(--accent-gold-light);
   transform: translateY(-3px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
-.sanbella-card {
-  background: white;
-  border: 1px solid var(--color-borde);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: var(--sombra-sanbella);
-}
-
-.input-sanbella {
+/* Inputs y Selects unificados */
+.input-sanbella, .select-custom {
   width: 100%;
   padding: 12px;
-  border: 1px solid var(--color-borde);
+  border: 2px solid #fdf2f2;
   border-radius: 12px;
   outline: none;
+  font-family: var(--main-font);
   transition: 0.3s;
+  background-color: white;
 }
 
-.input-sanbella:focus {
-  border-color: var(--color-primario);
+.input-sanbella:focus, .select-custom:focus {
+  border-color: var(--primary-purple);
 }
 
-/* 4. STEPPER GLOBAL */
-.stepper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.select-custom {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A1B9A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+/* ==========================================================================
+   4. ESTRUCTURAS DE FORMULARIO Y LAYOUT
+   ========================================================================== */
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--primary-purple);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 15px;
-  margin-bottom: 40px;
 }
 
-.step {
-  width: 35px; height: 35px;
-  border-radius: 50%;
-  background-color: #eee;
-  color: #999;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: bold;
+/* Separador elegante para el login/registro */
+.separator {
+  margin: 25px 0;
+  position: relative;
+  text-align: center;
 }
 
-.step.active {
-  background-color: var(--color-primario);
-  color: white;
-  box-shadow: 0 4px 10px rgba(176, 125, 125, 0.3);
+.separator::before {
+  content: ""; position: absolute; top: 50%; left: 0;
+  width: 100%; height: 1px; background: var(--border-color);
 }
 
-.line { width: 30px; height: 2px; background-color: #eee; }
-
-/* 5. ANIMACIONES */
-.fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
+.separator span {
+  background: var(--pure-white); padding: 0 10px; color: #999;
+  position: relative; z-index: 2; font-size: 0.8rem;
 }
+
+/* ==========================================================================
+   5. UTILIDADES RÁPIDAS (HELPERS)
+   ========================================================================== */
+.w-100 { width: 100%; }
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
+.mb-20 { margin-bottom: 20px; }
+.text-primary { color: var(--primary-purple); }
+.fade-in { animation: fadeIn 0.4s ease-out forwards; }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.link-sanbella {
-  color: var(--accent-gold)
+/* ==========================================================================
+   ESTILO DEL STEPPER (FLUJO DE PASOS)
+   ========================================================================== */
+.stepper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0; /* Quitamos el gap para que la línea toque los círculos */
+  margin-bottom: 40px;
+  padding: 20px;
+}
+
+.step {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e0e0e0; /* Color apagado para pasos pendientes */
+  color: var(--neutral-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-family: var(--main-font);
+  transition: all 0.4s ease;
+  z-index: 2;
+  border: 3px solid var(--pure-white); /* Crea un efecto de separación con la línea */
+}
+
+/* Paso Activo o Completado */
+.step.active {
+  background-color: var(--primary-purple);
+  color: var(--pure-white);
+  box-shadow: 0 4px 10px rgba(106, 27, 154, 0.3);
+  transform: scale(1.1); /* Se hace un poquito más grande */
+}
+
+/* La línea conectora */
+.line {
+  width: 50px; /* Ajusta el largo de la conexión */
+  height: 3px;
+  background-color: #e0e0e0;
+  margin: 0 -5px; /* Ajuste para que entre un poquito bajo el círculo */
+  z-index: 1;
+  transition: background-color 0.4s ease;
+}
+
+/* Línea activa (cuando el siguiente paso ya está activo) */
+/* Si quieres que la línea también se pinte, podrías usar una lógica de clases en el HTML */
+.line-active {
+  background-color: var(--primary-purple);
+}
+
+/* --- ESTADOS DE CITAS (GLOBAL) --- */
+.status-pill {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-pending   { background-color: #fff3cd; color: #856404; }
+.status-completed { background-color: #d4edda; color: #155724; }
+.status-cancelled { background-color: #f8d7da; color: #721c24; }
+
+/* --- BOTONES DE ACCIÓN RÁPIDA --- */
+.btn-action {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: var(--main-font);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.3s;
+  border: 1px solid transparent;
+}
+
+.btn-action-cancel {
+  background-color: #f2f2f2;
+  color: #d32f2f;
+}
+
+.btn-action-cancel:hover {
+  background-color: #ffebee;
 }

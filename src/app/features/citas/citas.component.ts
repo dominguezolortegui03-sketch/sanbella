@@ -85,7 +85,7 @@ constructor(private router: Router) {} // 2. Inyectar
     
     // Opcional: Limpiar la reserva y volver al inicio
     this.pasoActual = 1;
-    this.router.navigate(['/inicio']);
+    this.router.navigate(['/mis-citas']);
   }
 }
 }

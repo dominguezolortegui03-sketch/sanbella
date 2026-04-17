@@ -1,1 +1,51 @@
-<p>mis-citas works!</p>
+<div class="panel-container fade-in">
+  <header class="panel-header">
+    <h1 class="text-primary">Mi Panel</h1>
+    <p class="subtitle">Bienvenido de nuevo, Jesus Dominguez</p>
+  </header>
+
+  <section class="citas-section">
+    <h2 class="mb-20">Próximas Citas</h2>
+    
+    <div class="citas-grid">
+      <div *ngFor="let cita of citas" class="sanbella-card cita-card">
+
+        <div class="status-pill" [ngClass]="{
+          'status-pending': cita.status === 'pending',
+          'status-completed': cita.status === 'completed',
+          'status-cancelled': cita.status === 'cancelled'
+        }">
+          {{ cita.statusLabel }}
+        </div>
+
+        <div class="cita-body">
+          <div class="info-group">
+            <span class="label">Servicio</span>
+            <span class="value text-primary">{{ cita.servicio }}</span>
+          </div>
+
+          <div class="info-group">
+            <span class="label">Personal</span>
+            <span class="value">{{ cita.personal }}</span>
+          </div>
+
+          <div class="info-group">
+            <span class="label">Fecha y Hora</span>
+            <span class="value">{{ cita.fecha }}</span>
+          </div>
+        </div>
+
+        <div class="cita-actions">
+          <button class="btn-sanbella" (click)="verDetalle(cita.id)">
+            Ver Detalle
+          </button>
+          <button class="btn-action btn-action-cancel" (click)="cancelarCita(cita.id)">
+            Cancelar
+          </button>
+        </div>
+        
+      </div>
+    </div>
+
+  </section>
+</div>
