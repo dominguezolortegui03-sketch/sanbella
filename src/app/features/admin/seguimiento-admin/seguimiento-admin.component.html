@@ -1,51 +1,109 @@
-<div class="seguimiento-container">
+<div class="module-container">
   <header class="module-header">
-    <h1>Módulo 2: Seguimiento</h1>
-    <p>Monitorear y gestionar todas las citas</p>
+    <h1>Módulo: Seguimiento</h1>
+    <p>Gestión y monitoreo de citas activas</p>
   </header>
 
-  <div class="filter-bar">
-    <div class="filter-select">
-      <i class="bi bi-funnel"></i>
-      <select [(ngModel)]="filtroEstado" (change)="aplicarFiltro()">
-        <option value="Todos">Todos los Estados</option>
+  <div class="action-bar">
+    <div class="filters-container">
+      <input type="text" placeholder="Cliente..." [(ngModel)]="filtroCliente" class="filter-input">
+      <input type="text" placeholder="Especialista..." [(ngModel)]="filtroEspecialista" class="filter-input">
+      <input type="date" [(ngModel)]="filtroFecha" class="filter-input">
+      
+      <select [(ngModel)]="filtroServicio" class="filter-select">
+        <option value="">Todos los Servicios</option>
+        <option value="Limpieza Facial">Limpieza Facial</option>
+        <option value="Peeling Químico">Peeling Químico</option>
+      </select>
+
+      <select [(ngModel)]="filtroEstado" class="filter-select">
+        <option value="">Todos los Estados</option>
         <option value="Pendiente">Pendiente</option>
         <option value="Completado">Completado</option>
         <option value="Cancelado">Cancelado</option>
+        <option value="Inhabilitado">Inhabilitado</option>
       </select>
     </div>
   </div>
 
-  <div class="table-card">
-    <div class="table-header">
-      <div class="header-col">Cliente</div>
-      <div class="header-col">Servicio</div>
-      <div class="header-col">Fecha y Hora</div>
-      <div class="header-col">Especialista</div>
-      <div class="header-col">Estado</div>
-      <div class="header-col text-center">Acciones</div>
+  <div class="data-card">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Acciones</th>
+          <th>Cliente</th>
+          <th>Servicio</th>
+          <th>F. Registro</th>
+          <th>Cita (Fecha/Hora)</th>
+          <th>Especialista</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cita of citasFiltradas">
+          <td class="actions-cell">
+            <button class="btn-icon view" (click)="abrirModal('ver', cita)" title="Visualizar">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn-icon edit" (click)="abrirModal('reprogramar', cita)" title="Reprogramar">
+              <i class="bi bi-calendar-event"></i>
+            </button>
+            <button class="btn-icon delete" (click)="abrirModal('cancelar', cita)" title="Cancelar">
+              <i class="bi bi-x-circle"></i>
+            </button>
+            <button class="btn-icon reset" (click)="toggleEstado(cita)" title="Cambiar Estado">
+              <i class="bi" [ngClass]="cita.estado === 'Inhabilitado' ? 'bi-toggle-off' : 'bi-toggle-on'"></i>
+            </button>
+          </td>
+          <td><strong>{{ cita.cliente }}</strong></td>
+          <td>{{ cita.servicio }}</td>
+          <td>{{ cita.fechaRegistro }}</td>
+          <td>{{ cita.fechaCita }} <small>{{ cita.horaCita }}</small></td>
+          <td>{{ cita.especialista }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="cita.estado.toLowerCase()">
+              {{ cita.estado }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 style="text-transform: capitalize;">{{ modoModal }} Cita</h2>
+      <button class="btn-close-x" (click)="cerrarModal()">&times;</button>
     </div>
 
-    <div class="table-body">
-      <div class="table-row" *ngFor="let cita of citasFiltradas">
-        <div class="row-col"><strong>{{ cita.cliente }}</strong></div>
-        <div class="row-col">{{ cita.servicio }}</div>
-        <div class="row-col">{{ cita.fecha }}</div>
-        <div class="row-col">{{ cita.especialista }}</div>
-        <div class="row-col">
-          <span class="status-badge" [ngClass]="cita.estado.toLowerCase()">
-            {{ cita.estado }}
-          </span>
-        </div>
-        <div class="row-col text-center actions">
-          <button title="Ver Detalle"><i class="bi bi-eye"></i></button>
-          <button title="Más Opciones"><i class="bi bi-three-dots-vertical"></i></button>
-        </div>
+    <div class="modal-body">
+      <div *ngIf="modoModal === 'ver'" class="detalle-view">
+        <div class="info-item"><label>Emisión:</label> <span>{{ citaSeleccionada.fechaRegistro }}</span></div>
+        <div class="info-item"><label>Cita Programada:</label> <span>{{ citaSeleccionada.fechaCita }} {{ citaSeleccionada.horaCita }}</span></div>
+        <div class="info-item"><label>Cliente:</label> <span>{{ citaSeleccionada.cliente }}</span></div>
+        <div class="info-item"><label>Especialista:</label> <span>{{ citaSeleccionada.especialista }}</span></div>
+        <div class="info-item"><label>Servicio:</label> <span>{{ citaSeleccionada.servicio }}</span></div>
       </div>
 
-      <div class="empty-state" *ngIf="citasFiltradas.length === 0">
-        <p>No se encontraron reservas para el estado: {{ filtroEstado }}</p>
+      <div *ngIf="modoModal !== 'ver'">
+        <div class="form-group" *ngIf="modoModal === 'reprogramar'">
+          <label>Nueva Fecha y Hora</label>
+          <input type="datetime-local" [(ngModel)]="nuevaFecha">
+        </div>
+        <div class="form-group">
+          <label>Motivo de {{ modoModal }}</label>
+          <textarea rows="3" [(ngModel)]="motivoAccion" placeholder="Explique el motivo..."></textarea>
+        </div>
       </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel-modal" (click)="cerrarModal()">{{ modoModal === 'ver' ? 'Cerrar' : 'Volver' }}</button>
+      <button *ngIf="modoModal !== 'ver'" class="btn-save-modal" (click)="procesarAccion()">
+        Confirmar
+      </button>
     </div>
   </div>
 </div>

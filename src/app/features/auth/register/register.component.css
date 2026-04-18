@@ -3,55 +3,132 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  /* Degradado sutil de fondo para que no sea un color plano aburrido */
-  background: linear-gradient(135deg, var(--light-gray) 0%, #e0e0e0 100%);
+  background: linear-gradient(135deg, #f5f7fa 0%, #e0e0e0 100%);
   padding: 40px 20px;
 }
 
 .register-card {
-  background-color: var(--pure-white);
-  padding: 45px;
+  background-color: #ffffff;
+  padding: 40px;
   border-radius: 24px;
-  /* Sombra multinivel para dar efecto de "elevación" */
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05), 0 20px 48px rgba(106, 27, 154, 0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
   width: 100%;
-  max-width: 500px;
-  border-top: 8px solid var(--primary-purple); /* Línea de marca arriba */
+  max-width: 550px;
+  border-top: 8px solid #e0b0ff;
   text-align: center;
 }
 
-.register-card h2 {
-  color: var(--primary-purple);
-  font-size: 2rem;
-  margin-bottom: 8px;
-  font-weight: 700;
-}
-
-.subtitle {
-  color: var(--neutral-gray);
-  margin-bottom: 30px;
-  font-size: 1rem;
-}
-
-/* Contenedor de inputs para que respiren */
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Nombre y Apellido en la misma fila */
+  grid-template-columns: 1fr 1fr;
   gap: 15px;
   text-align: left;
 }
 
-.full-width {
-  grid-column: span 2;
-}
+.full-width { grid-column: span 2; }
 
 .form-group label {
   display: block;
-  margin-bottom: 8px;
-  margin-left: 4px;
+  margin-bottom: 6px;
   font-weight: 700;
-  color: var(--primary-purple); /* Morado para los labels para que resalten */
-  font-size: 0.85rem;
+  color: #7b1fa2;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+}
+
+.input-sanbella {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #f9f9f9;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.input-sanbella:focus {
+  border-color: #e0b0ff;
+  background: #fff;
+}
+
+/* --- TOOLTIP FLOTANTE (ESTILO IMAGEN) --- */
+.password-wrapper {
+  position: relative;
+}
+
+.password-tooltip {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  z-index: 100;
+  border: 1px solid #f0f0f0;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  top: -8px;
+  left: 20px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid white;
+}
+
+.tooltip-title {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.req-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.req-list li {
+  font-size: 0.8rem;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d32f2f; /* Rojo error */
+  transition: color 0.3s;
+}
+
+.req-list li.met {
+  color: #2e7d32; /* Verde éxito */
+}
+
+.req-list li i { font-size: 1rem; }
+
+/* Botón y Enlaces */
+.btn-sanbella {
+  background: #e0b0ff;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.btn-sanbella:disabled {
+  background: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.link-sanbella { color: #7b1fa2; font-weight: bold; text-decoration: none; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export interface Servicio {
-  id?: number;
+  id: number;
   nombre: string;
   categoria: string;
-  duracion: string;
+  tiempo: string;
   precio: string;
+  estado: 'Habilitado' | 'Inhabilitado';
 }
 
 @Component({
@@ -17,63 +18,42 @@ export interface Servicio {
   templateUrl: './servicio-admin.component.html',
   styleUrl: './servicio-admin.component.css'
 })
-export class ServicioAdminComponent implements OnInit {
-  // Lista de categorías estandarizadas para Sanbella
-  categoriasDisponibles: string[] = [
-    'Uñas',
-    'Pestañas',
-    'Cabello',
-    'Rostro',
-    'Masajes',
-    'Corporal'
-  ];
+export class ServicioAdminComponent {
+  filtroNombre = '';
+  filtroCategoria = '';
+  filtroEstado = '';
 
+  categoriasDisponibles = ['Uñas', 'Pestañas', 'Cabello', 'Rostro', 'Corporal'];
+  
   servicios: Servicio[] = [
-    { id: 1, nombre: 'Manicure Spa', categoria: 'Uñas', duracion: '60 min', precio: '$45' },
-    { id: 2, nombre: 'Extensiones de Pestañas', categoria: 'Pestañas', duracion: '90 min', precio: '$70' },
-    { id: 3, nombre: 'Corte de Cabello', categoria: 'Cabello', duracion: '45 min', precio: '$30' },
-    { id: 4, nombre: 'Ondulación de Cabello', categoria: 'Cabello', duracion: '90 min', precio: '$60' },
-    { id: 5, nombre: 'Pedicure Spa', categoria: 'Uñas', duracion: '60 min', precio: '$50' },
-    { id: 6, nombre: 'Maquillaje Profesional', categoria: 'Rostro', duracion: '60 min', precio: '$45' },
-    { id: 7, nombre: 'Peinados', categoria: 'Cabello', duracion: '45 min', precio: '$40' }
+    { id: 1, nombre: 'Manicure Spa', categoria: 'Uñas', tiempo: '60 min', precio: 'S/ 45.00', estado: 'Habilitado' },
+    { id: 2, nombre: 'Corte Varón', categoria: 'Cabello', tiempo: '30 min', precio: 'S/ 30.00', estado: 'Habilitado' }
   ];
 
-  paginaActual: number = 1;
-  itemsPorPagina: number = 10;
-  mostrarModal: boolean = false;
-  esEdicion: boolean = false;
-  formServicio: Servicio = this.limpiarForm();
+  mostrarModal = false;
+  modoModal: 'nuevo' | 'editar' | 'ver' = 'nuevo';
+  formServicio = this.limpiarForm();
 
-  ngOnInit() {}
-
-  get totalPaginas(): number {
-    return Math.ceil(this.servicios.length / this.itemsPorPagina);
+  get serviciosFiltrados() {
+    return this.servicios.filter(s => {
+      return s.nombre.toLowerCase().includes(this.filtroNombre.toLowerCase()) &&
+             (this.filtroCategoria === '' || s.categoria === this.filtroCategoria) &&
+             (this.filtroEstado === '' || s.estado === this.filtroEstado);
+    });
   }
 
-  get serviciosPaginados(): Servicio[] {
-    const inicio = (this.paginaActual - 1) * this.itemsPorPagina;
-    return this.servicios.slice(inicio, inicio + this.itemsPorPagina);
-  }
-
-  abrirModal(servicio?: Servicio) {
-    if (servicio) {
-      this.esEdicion = true;
-      this.formServicio = { ...servicio };
-    } else {
-      this.esEdicion = false;
-      this.formServicio = this.limpiarForm();
-    }
+  abrirModal(modo: 'nuevo' | 'editar' | 'ver', servicio?: Servicio) {
+    this.modoModal = modo;
+    this.formServicio = modo === 'nuevo' ? this.limpiarForm() : { ...servicio! };
     this.mostrarModal = true;
   }
 
-  cerrarModal() {
-    this.mostrarModal = false;
-  }
+  cerrarModal() { this.mostrarModal = false; }
 
   guardarServicio() {
-    if (this.esEdicion) {
+    if (this.modoModal === 'editar') {
       const index = this.servicios.findIndex(s => s.id === this.formServicio.id);
-      if (index !== -1) this.servicios[index] = { ...this.formServicio };
+      this.servicios[index] = { ...this.formServicio };
     } else {
       this.formServicio.id = Date.now();
       this.servicios.push({ ...this.formServicio });
@@ -81,21 +61,16 @@ export class ServicioAdminComponent implements OnInit {
     this.cerrarModal();
   }
 
-  eliminarServicio(id?: number) {
-    if (confirm('¿Deseas eliminar este servicio de Sanbella?')) {
-      this.servicios = this.servicios.filter(s => s.id !== id);
-      if (this.serviciosPaginados.length === 0 && this.paginaActual > 1) {
-        this.paginaActual--;
-      }
-    }
+  toggleEstado(servicio: Servicio) {
+    servicio.estado = servicio.estado === 'Habilitado' ? 'Inhabilitado' : 'Habilitado';
   }
 
-  cambiarPagina(p: number) {
-    this.paginaActual = p;
+  abrirModalCategoria() {
+    const nueva = prompt('Nombre de la nueva categoría:');
+    if (nueva) this.categoriasDisponibles.push(nueva);
   }
 
   private limpiarForm(): Servicio {
-    // Inicializamos categoría vacía para que el "Seleccione..." aparezca por defecto
-    return { nombre: '', categoria: '', duracion: '', precio: '$' };
+    return { id: 0, nombre: '', categoria: 'Uñas', tiempo: '', precio: 'S/ ', estado: 'Habilitado' };
   }
 }

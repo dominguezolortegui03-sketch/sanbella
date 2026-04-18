@@ -17,8 +17,9 @@ interface SiderbarOption{
 })
 export class SidebarComponent {
  menuOptions: SiderbarOption[]=[
-  {icon:'assets/sidebarIcon/seguridad.svg',label:'Módulo 1: Seguridad',route:'/panel-admin/seguridad-admin'},
-  {icon:'assets/sidebarIcon/seguimiento.svg',label:'Módulo 2: Seguimiento',route:'/panel-admin/seguimiento-admin'},
+  {icon:'assets/sidebarIcon/seguridad.svg',label:'Módulo 1: Gestion cliente',route:'/panel-admin/gestion-cliente'},
+  {icon:'assets/sidebarIcon/seguridad.svg',label:'Módulo 2: Gestion Personal',route:'/panel-admin/gestion-personal'},
+  {icon:'assets/sidebarIcon/seguimiento.svg',label:'Módulo 3: Seguimiento',route:'/panel-admin/seguimiento-admin'},
   {icon:'assets/sidebarIcon/servicios.svg',label:'Servicios',route:'/panel-admin/servicio-admin'},
   {icon:'assets/sidebarIcon/personal.svg',label:'Personal y Horarios',route:'/panel-admin/personal-admin'},
   {icon:'assets/sidebarIcon/reporte.svg',label:'Reportes',route:'/panel-admin/reporte-admin'}

@@ -13,6 +13,9 @@ import { SeguimientoAdminComponent } from './features/admin/seguimiento-admin/se
 import { ServicioAdminComponent } from './features/admin/servicio-admin/servicio-admin.component';
 import { PersonalAdminComponent } from './features/admin/personal-admin/personal-admin.component';
 import { ReporteAdminComponent } from './features/admin/reporte-admin/reporte-admin.component';
+import { GestionPersonalComponent } from './features/admin/gestion-personal/gestion-personal.component';
+import { GestionClientesComponent } from './features/admin/gestion-clientes/gestion-clientes.component';
+import { EspecialistaCitasComponent } from './features/especialista-cita/especialista-cita.component';
 
 export const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
@@ -21,10 +24,12 @@ export const routes: Routes = [
   {path:'mis-citas',component:MisCitasComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+   { path: 'especialista-cita', component: EspecialistaCitasComponent },
   { path: 'panel-admin', component: PanelAdminComponent , 
     children: [
       {path: '', component: InicioAdminComponent},
-      {path:'seguridad-admin', component: SeguridadAdminComponent},
+      {path:'gestion-personal', component: GestionPersonalComponent},
+      {path:'gestion-cliente', component: GestionClientesComponent},
       {path:'seguimiento-admin', component: SeguimientoAdminComponent},
       {path:'servicio-admin', component: ServicioAdminComponent},
       {path:'personal-admin', component: PersonalAdminComponent},

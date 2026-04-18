@@ -1,0 +1,135 @@
+<div class="module-container">
+  <header class="module-header">
+    <div class="header-content">
+      <h1>Mis Citas Asignadas</h1>
+      <p>Gestión y ejecución de servicios en tiempo real</p>
+    </div>
+  </header>
+
+  <div class="action-bar">
+    <div class="filters-grid">
+      <div class="filter-item">
+        <label>Estado</label>
+        <select [(ngModel)]="filtros.estado" class="filter-input">
+          <option value="">Todos</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="En Proceso">En Proceso</option>
+          <option value="Finalizado">Finalizado</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label>Servicio</label>
+        <input type="text" [(ngModel)]="filtros.servicio" placeholder="Buscar servicio..." class="filter-input">
+      </div>
+      <div class="filter-item">
+        <label>Cliente</label>
+        <input type="text" [(ngModel)]="filtros.cliente" placeholder="Nombre del cliente..." class="filter-input">
+      </div>
+      <div class="filter-item">
+        <label>Fecha</label>
+        <input type="date" [(ngModel)]="filtros.fecha" class="filter-input">
+      </div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Servicio</th>
+          <th>Fecha y Hora</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cita of citasFiltradas">
+          <td>
+            <div class="client-info">
+              <span class="client-name">{{ cita.cliente }}</span>
+            </div>
+          </td>
+          <td>{{ cita.servicio }}</td>
+          <td>
+            <div class="datetime-cell">
+              <span><i class="bi bi-calendar3"></i> {{ cita.fecha }}</span>
+              <span class="time-tag">{{ cita.hora }}</span>
+            </div>
+          </td>
+          <td>
+            <span [class]="'status-badge ' + cita.estado.toLowerCase().replace(' ', '-')">
+              {{ cita.estado }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button class="btn-action view" (click)="verDetalles(cita)" title="Visualizar">
+              <i class="bi bi-eye"></i>
+            </button>
+            
+            <button *ngIf="cita.estado === 'Pendiente'" class="btn-action start" (click)="iniciarServicio(cita)" title="Iniciar">
+              <i class="bi bi-play-fill"></i>
+            </button>
+
+            <button *ngIf="cita.estado === 'En Proceso'" class="btn-action end" (click)="finalizarServicio(cita)" title="Finalizar">
+              <i class="bi bi-stop-fill"></i>
+            </button>
+
+            <button class="btn-action evidence" (click)="abrirEvidencia(cita)" title="Evidencia">
+              <i class="bi bi-camera"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarDetalles">
+  <div class="modal-card detail-modal">
+    <div class="modal-header">
+      <h2>Detalles de la Cita</h2>
+      <button class="btn-close" (click)="mostrarDetalles = false">&times;</button>
+    </div>
+    <div class="modal-body" *ngIf="citaSeleccionada">
+      <div class="detail-grid">
+        <div class="detail-item"><strong>Cliente:</strong> {{ citaSeleccionada.cliente }}</div>
+        <div class="detail-item"><strong>Servicio:</strong> {{ citaSeleccionada.servicio }}</div>
+        <div class="detail-item"><strong>Fecha Programada:</strong> {{ citaSeleccionada.fecha }}</div>
+        <div class="detail-item"><strong>Hora Programada:</strong> {{ citaSeleccionada.hora }}</div>
+        <div class="detail-item"><strong>Estado Actual:</strong> {{ citaSeleccionada.estado }}</div>
+        <div class="detail-item highlight">
+          <strong>Fecha Inicio:</strong> {{ citaSeleccionada.fechaInicio || '---' }}
+        </div>
+        <div class="detail-item highlight">
+          <strong>Fecha Fin:</strong> {{ citaSeleccionada.fechaFin || '---' }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarEvidencia">
+  <div class="modal-card evidence-modal">
+    <div class="modal-header">
+      <h2>Subir Evidencia</h2>
+      <button class="btn-close" (click)="mostrarEvidencia = false">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Seleccione las imágenes del resultado del servicio para {{ citaSeleccionada?.cliente }}.</p>
+      <div class="upload-zone" (click)="fileInput.click()">
+        <i class="bi bi-cloud-arrow-up"></i>
+        <span>Haga clic para subir imágenes</span>
+        <input #fileInput type="file" (change)="onFileSelected($event)" hidden multiple accept="image/*">
+      </div>
+      <div class="preview-grid" *ngIf="imagenesEvidencia.length > 0">
+        <div class="preview-item" *ngFor="let img of imagenesEvidencia">
+          <img [src]="img" alt="Evidencia">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-save" (click)="guardarEvidencia()" [disabled]="imagenesEvidencia.length === 0">Guardar Evidencia</button>
+    </div>
+  </div>
+</div>

@@ -3,41 +3,86 @@
     <h2>Únete a Sanbella</h2>
     <p class="subtitle">Regístrate para gestionar tus citas estéticas</p>
 
-    <form class="form-grid">
+    <form class="form-grid" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label>Nombre</label>
-        <input type="text" class="input-sanbella" placeholder="Ej. Marco">
+        <input type="text" name="nombre" [(ngModel)]="userRegister.nombre" class="input-sanbella" placeholder="Ej. Marco" required>
       </div>
       <div class="form-group">
         <label>Apellido</label>
-        <input type="text" class="input-sanbella" placeholder="Ej. Arroyo">
+        <input type="text" name="apellido" [(ngModel)]="userRegister.apellido" class="input-sanbella" placeholder="Ej. Arroyo" required>
+      </div>
+
+      <div class="form-group">
+        <label>Tipo Doc.</label>
+        <select name="tipoDoc" [(ngModel)]="userRegister.tipoDoc" class="input-sanbella">
+          <option value="DNI">DNI</option>
+          <option value="CE">C.E.</option>
+          <option value="Pasaporte">Pasaporte</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>N° Documento</label>
+        <input type="text" name="numDoc" [(ngModel)]="userRegister.numDoc" class="input-sanbella" placeholder="12345678" required>
       </div>
 
       <div class="form-group full-width">
         <label>Correo Electrónico</label>
-        <input type="email" class="input-sanbella" placeholder="correo@sanbella.com">
+        <input type="email" name="correo" [(ngModel)]="userRegister.correo" class="input-sanbella" placeholder="correo@sanbella.com" required>
       </div>
 
       <div class="form-group full-width">
         <label>Teléfono de contacto</label>
-        <input type="tel" class="input-sanbella" placeholder="999 999 999">
+        <input type="tel" name="telefono" [(ngModel)]="userRegister.telefono" class="input-sanbella" placeholder="999 999 999" required>
       </div>
 
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" class="input-sanbella" placeholder="********">
+      <div class="form-group full-width">
+        <label>Nombre de Usuario</label>
+        <input type="text" name="usuario" [(ngModel)]="userRegister.usuario" class="input-sanbella" placeholder="marco_arroyo" required>
       </div>
+
+      <div class="form-group password-wrapper">
+        <label>Contraseña</label>
+        <input type="password" name="password" 
+               [(ngModel)]="userRegister.password" 
+               (input)="validarPassword()"
+               (focus)="mostrarTooltip = true"
+               (blur)="mostrarTooltip = false"
+               class="input-sanbella" placeholder="********" required>
+
+        <div class="password-tooltip" *ngIf="mostrarTooltip || userRegister.password.length > 0">
+          <div class="tooltip-arrow"></div>
+          <p class="tooltip-title">La contraseña debería cumplir con:</p>
+          <ul class="req-list">
+            <li [class.met]="checks.hasUpper">
+              <i class="bi" [ngClass]="checks.hasUpper ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+              Tener <strong>una mayúscula</strong>
+            </li>
+            <li [class.met]="checks.hasNumber">
+              <i class="bi" [ngClass]="checks.hasNumber ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+             Tener <strong>un número</strong>
+            </li>
+            <li [class.met]="checks.minChars">
+              <i class="bi" [ngClass]="checks.minChars ? 'bi-check-circle-fill' : 'bi-x-circle-fill'"></i>
+             Minimo <strong>8 caracteres</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div class="form-group">
         <label>Confirmar</label>
-        <input type="password" class="input-sanbella" placeholder="********">
+        <input type="password" name="confirmPassword" 
+               [(ngModel)]="userRegister.confirmPassword" 
+               class="input-sanbella" placeholder="********" required>
       </div>
 
-      <button type="submit" class="btn-sanbella full-width">
+      <button type="submit" class="btn-sanbella full-width" [disabled]="!todoValido()">
         CREAR MI CUENTA
       </button>
     </form>
 
-    <p class="login-link" style="margin-top: 25px;">
+    <p class="login-link">
       ¿Ya eres parte de la familia? 
       <a routerLink="/login" class="link-sanbella">Inicia sesión</a>
     </p>

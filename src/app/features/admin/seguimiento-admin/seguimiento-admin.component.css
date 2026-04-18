@@ -1,143 +1,50 @@
-.seguimiento-container {
+.module-container { padding: 20px; animation: fadeIn 0.5s ease; }
+.module-header h1 { font-size: 24px; color: #333; margin: 0; }
+.module-header p { color: #888; font-size: 14px; margin-bottom: 20px; }
+
+.action-bar { margin-bottom: 20px; }
+.filters-container { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.filter-input, .filter-select {
   padding: 10px;
-  font-family: 'Inter', sans-serif;
-}
-
-.module-header h1 {
-  font-size: 1.8rem;
-  color: #333;
-  margin-bottom: 4px;
-  font-weight: 700;
-}
-
-.module-header p {
-  color: #666;
-  font-size: 1rem;
-  margin-bottom: 25px;
-}
-
-/* Estilo del Filtro */
-.filter-bar {
-  margin-bottom: 20px;
-}
-
-.filter-select {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #eee;
   border-radius: 8px;
-  padding: 10px 15px;
-  width: 100%;
-  max-width: 900px; /* Ajustado para que se vea largo como en tu imagen */
-  cursor: pointer;
-  color: #444;
-  font-size: 0.9rem;
-}
-
-.filter-select i {
-  margin-right: 10px;
-  color: #666;
-}
-
-.ms-auto {
-  margin-left: auto;
-}
-
-/* Estilo de la Tabla/Card */
-.table-card {
-  background: #fdf8ff; /* Fondo ligeramente rosado/lila de la imagen */
-  border-radius: 12px;
-  border: 1px solid #f0e6f5;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-}
-
-.table-header {
-  display: flex;
-  padding: 20px;
-  border-bottom: 1px solid #f0e6f5;
-  font-weight: 700;
-  color: #333;
-}
-
-.header-col {
-  flex: 1;
-  font-size: 0.95rem;
-}
-
-.empty-state {
-  padding: 40px 20px;
-  text-align: left; /* Alineado a la izquierda según la imagen */
-  color: #666;
-  font-size: 1rem;
-}
-
-.text-center {
-  text-align: center;
-}
-/* ... Tus estilos anteriores se mantienen ... */
-
-/* Ajuste para que el select sea invisible pero funcional */
-.filter-select select {
-  border: none;
+  font-size: 13px;
   outline: none;
-  background: transparent;
-  width: 100%;
-  cursor: pointer;
-  appearance: none; /* Quita la flecha por defecto del navegador */
-  color: #444;
 }
 
-/* Estilos de las filas dinámicas */
-.table-row {
-  display: flex;
-  padding: 15px 20px;
-  background: #fff;
-  border-bottom: 1px solid #f0e6f5;
-  align-items: center;
-  transition: background 0.2s;
-}
+.data-card { background: white; border-radius: 15px; border: 1px solid #f0f0f0; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+.custom-table { width: 100%; border-collapse: collapse; }
+.custom-table th { text-align: left; padding: 15px; font-size: 12px; color: #aaa; text-transform: uppercase; border-bottom: 1px solid #f9f9f9; }
+.custom-table td { padding: 15px; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
 
-.table-row:hover {
-  background: #fafafa;
-}
+.btn-icon { background: none; border: none; font-size: 18px; cursor: pointer; margin-right: 8px; opacity: 0.7; }
+.btn-icon:hover { opacity: 1; transform: scale(1.1); }
+.view { color: #607d8b; }
+.edit { color: #4fc3f7; }
+.delete { color: #f06292; }
+.reset { color: #9c27b0; }
 
-.row-col {
-  flex: 1;
-  font-size: 0.9rem;
-  color: #555;
-}
+.status-badge { padding: 5px 10px; border-radius: 10px; font-size: 11px; font-weight: bold; }
+.pendiente { background: #fff8e1; color: #ffa000; }
+.completado { background: #e8f5e9; color: #388e3c; }
+.cancelado { background: #ffebee; color: #d32f2f; }
+.inhabilitado { background: #f5f5f5; color: #9e9e9e; }
 
-/* Badges de Estado */
-.status-badge {
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
+/* MODAL */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(3px); }
+.modal-content { background: white; padding: 25px; border-radius: 20px; width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.btn-close-x { background: none; border: none; font-size: 20px; cursor: pointer; color: #ccc; }
 
-.pendiente { background: #fff3cd; color: #856404; }
-.completado { background: #d4edda; color: #155724; }
-.cancelado { background: #f8d7da; color: #721c24; }
+.info-item { margin-bottom: 10px; display: flex; justify-content: space-between; border-bottom: 1px dashed #eee; padding-bottom: 5px; }
+.info-item label { font-weight: bold; color: #666; }
 
-/* Botones de acción */
-.actions button {
-  background: none;
-  border: none;
-  color: #888;
-  font-size: 1.1rem;
-  cursor: pointer;
-  margin: 0 5px;
-  transition: color 0.2s;
-}
+.form-group { margin-top: 15px; display: flex; flex-direction: column; gap: 5px; }
+.form-group input, .form-group textarea { padding: 10px; border: 1px solid #eee; border-radius: 10px; background: #fcfcfc; }
 
-.actions button:hover {
-  color: #a855f7; /* Color de Sanbella */
-}
+.modal-footer { margin-top: 25px; display: flex; gap: 10px; }
+.btn-save-modal { flex: 2; background: #e0b0ff; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+.btn-cancel-modal { flex: 1; background: #f5f5f5; color: #999; border: none; padding: 12px; border-radius: 10px; cursor: pointer; }
 
-.empty-state {
-  padding: 40px 20px;
-  color: #999;
-  font-style: italic;
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

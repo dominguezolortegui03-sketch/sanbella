@@ -1,0 +1,42 @@
+.module-container { padding: 25px; background: #f8f9fa; min-height: 100vh; }
+.module-header h1 { color: #4a148c; font-size: 1.8rem; margin-bottom: 5px; }
+
+/* Filtros */
+.action-bar { background: white; padding: 20px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+.filter-item label { display: block; font-size: 0.75rem; font-weight: bold; color: #7b1fa2; margin-bottom: 5px; text-transform: uppercase; }
+.filter-input { width: 100%; padding: 10px; border: 1px solid #eee; border-radius: 10px; outline: none; }
+
+/* Tabla */
+.data-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.custom-table { width: 100%; border-collapse: collapse; }
+.custom-table th { background: #f3e5f5; padding: 15px; text-align: left; color: #7b1fa2; font-size: 0.85rem; }
+.custom-table td { padding: 15px; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+
+/* Badges */
+.status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+.status-badge.pendiente { background: #fff3e0; color: #ef6c00; }
+.status-badge.en-proceso { background: #e3f2fd; color: #1565c0; }
+.status-badge.finalizado { background: #e8f5e9; color: #2e7d32; }
+
+/* Botones Acciones */
+.btn-action { border: none; background: none; font-size: 1.2rem; cursor: pointer; margin-right: 10px; transition: 0.2s; }
+.view { color: #607d8b; }
+.start { color: #4caf50; }
+.end { color: #f44336; }
+.evidence { color: #7b1fa2; }
+.btn-action:hover { transform: scale(1.2); }
+
+/* Modales */
+.modal-overlay { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(4px); }
+.modal-card { background: white; border-radius: 20px; width: 90%; max-width: 500px; padding: 25px; }
+.detail-grid { display: grid; gap: 15px; }
+.highlight { background: #f3e5f5; padding: 10px; border-radius: 10px; }
+
+/* Upload */
+.upload-zone { border: 2px dashed #e0b0ff; border-radius: 15px; padding: 30px; text-align: center; cursor: pointer; color: #7b1fa2; }
+.upload-zone i { font-size: 2.5rem; display: block; }
+.preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+.preview-item img { width: 100%; height: 80px; object-fit: cover; border-radius: 10px; }
+
+.btn-save { width: 100%; background: #7b1fa2; color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; }

@@ -1,91 +1,166 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+
+interface Servicio {
+  nombre: string;
+  categoria: string;
+  precio: number;
+}
+
+interface Especialista {
+  nombre: string;
+  categoria: string;
+  especialidad: string;
+}
 
 @Component({
-  selector: 'app-citas',
+  selector: 'app-booking',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './citas.component.html',
   styleUrl: './citas.component.css'
 })
 export class CitasComponent {
-  pasoActual = 1;
-  isLogged: boolean = false;
-  usuarioLogueado: any = null; // Iniciamos en null
+  pasoActual: number = 1;
+  isLogged: boolean = false; 
+  continuarComoInvitado: boolean = false;
 
+  categorias: string[] = ['Facial', 'Capilar', 'Manicure', 'Estética'];
+  
+  serviciosBase: Servicio[] = [
+    { nombre: 'Limpieza Profunda', categoria: 'Facial', precio: 120 },
+    { nombre: 'Peeling Químico', categoria: 'Facial', precio: 150 },
+    { nombre: 'Corte de Dama', categoria: 'Capilar', precio: 80 },
+    { nombre: 'Esmaltado Gel', categoria: 'Manicure', precio: 60 }
+  ];
+  
+  especialistasBase: Especialista[] = [
+    { nombre: 'Dra. Claudia Pérez', categoria: 'Facial', especialidad: 'Dermatóloga' },
+    { nombre: 'Sandra Ramos', categoria: 'Facial', especialidad: 'Cosmiatra' },
+    { nombre: 'Milagros Luna', categoria: 'Manicure', especialidad: 'Nail Artist' },
+    { nombre: 'Valeria Soler', categoria: 'Capilar', especialidad: 'Colorista' }
+  ];
+
+  serviciosFiltrados: Servicio[] = [];
+  horasDisponibles: string[] = ['09:00 AM', '10:00 AM', '11:00 AM', '03:00 PM', '04:00 PM'];
+
+  // Objeto de reserva inicializado completamente
   reserva = {
+    categoria: '',
     servicio: '',
-    especialista: '',
+    precio: 0,
     fecha: '',
     hora: '',
-    cliente: { nombre: '', apellido: '', telefono: '', correo: '' },
-    notas: ''
+    especialista: ''
   };
 
-  servicios = ['Cabello', 'Maquillaje', 'Pestañas', 'Cejas', 'Manicure', 'Pedicure'];
-  horasDisponibles = ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'];
+  // Objeto de invitado inicializado para evitar errores en ngModel
+  invitado = {
+    nombre: '',
+    celular: ''
+  };
 
-  siguientePaso() { if (this.pasoActual < 4) this.pasoActual++; }
-  pasoAnterior() { if (this.pasoActual > 1) this.pasoActual--; }
+  usuarioLogueado = { nombre: 'Jesus', apellido: 'Dominguez', telefono: '987654321' };
 
-  seleccionarServicio(s: string) {
-    this.reserva.servicio = s;
-    this.siguientePaso();
+  filtrarServicios(): void {
+    this.serviciosFiltrados = this.serviciosBase.filter(s => s.categoria === this.reserva.categoria);
+    this.reserva.servicio = '';
+    this.reserva.precio = 0;
   }
 
-  // Diccionario de especialistas por servicio
-especialistasPorServicio: any = {
-  'CABELLO': ['Lucía Méndez', 'Roberto Paz'],
-  'MAQUILLAJE': ['Ana García', 'Elena Torres'],
-  'PESTAÑAS': ['Carla Ruiz', 'Sofía Luna'],
-  'CEJAS': ['Carla Ruiz', 'Diana Sol'],
-  'MANICURE': ['Marta Flores', 'Rosa Pérez'],
-  'PEDICURE': ['Marta Flores', 'Beatriz Sanz']
-};
+  seleccionarServicio(s: Servicio): void {
+    this.reserva.servicio = s.nombre;
+    this.reserva.precio = s.precio;
+    this.pasoActual = 2;
+  }
 
-// Función para obtener la lista según el servicio actual
-getEstilistasDisponibles() {
-  return this.especialistasPorServicio[this.reserva.servicio.toUpperCase()] || [];
-}
+  seleccionarHora(h: string): void {
+    this.reserva.hora = h;
+    this.pasoActual = 3;
+  }
 
-constructor(private router: Router) {} // 2. Inyectar
-  // 2. LA MAGIA: LEER LOS DATOS AL INICIAR
-  ngOnInit(): void {
-    // Buscamos el "paquete" que dejó el Login en el navegador
-    const datosGuardados = localStorage.getItem('userLogueado');
+  get especialistasDisponibles(): Especialista[] {
+    return this.especialistasBase.filter(e => e.categoria === this.reserva.categoria);
+  }
 
-    if (datosGuardados) {
-      // Si existe, activamos el switch y convertimos el texto a objeto
-      this.isLogged = true;
-      this.usuarioLogueado = JSON.parse(datosGuardados);
+  seleccionarEspecialista(esp: Especialista): void {
+    this.reserva.especialista = esp.nombre;
+    this.pasoActual = 4;
+  }
 
-      // 3. ASIGNAR A LA RESERVA (Para que no se pierdan los datos)
-      this.reserva.cliente.nombre = this.usuarioLogueado.nombre;
-      this.reserva.cliente.apellido = this.usuarioLogueado.apellido;
-      this.reserva.cliente.telefono = this.usuarioLogueado.telefono;
-      this.reserva.cliente.correo = this.usuarioLogueado.correo;
+  validarInvitado(): void {
+    if (this.invitado.nombre.trim() && this.invitado.celular.trim()) {
+      this.pasoActual = 5;
+    } else {
+      alert("Por favor, completa tus datos para continuar.");
     }
   }
 
-  irALogin() {
-    // 3. Redirigir al componente de login
-    this.router.navigate(['/login']);
+  get nombreCliente(): string {
+    if (this.isLogged) return `${this.usuarioLogueado.nombre} ${this.usuarioLogueado.apellido}`;
+    return this.invitado.nombre || 'Invitado';
   }
 
-  irARegistro() {
-    this.router.navigate(['/register']);
+  confirmarCita(): void {
+    console.log("Reserva Finalizada:", { ...this.reserva, cliente: this.nombreCliente });
+    alert("¡Cita confirmada exitosamente en Sanbella! ✨");
   }
 
-  confirmarCita() {
-  if (this.reserva.especialista) {
-    // Aquí puedes disparar un efecto de confeti o un modal de éxito
-    alert(`¡Cita confirmada! Te esperamos con ${this.reserva.especialista} el día ${this.reserva.fecha}.`);
+  pasoAnterior(): void { if (this.pasoActual > 1) this.pasoActual--; }
+  
+  irALogin(): void { console.log("Redirigiendo a Login..."); }
+  irARegistro(): void { console.log("Redirigiendo a Registro..."); }
+  fechaCalendario: Date = new Date();
+  diasSemana: string[] = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do'];
+  diasDelMes: number[] = [];
+  diasPrevios: number[] = [];
+  meses: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+  get nombreMesActual() { return this.meses[this.fechaCalendario.getMonth()]; }
+  get anioActual() { return this.fechaCalendario.getFullYear(); }
+
+  ngOnInit() {
+    this.generarCalendario();
+  }
+
+  generarCalendario() {
+    const mes = this.fechaCalendario.getMonth();
+    const anio = this.fechaCalendario.getFullYear();
     
-    // Opcional: Limpiar la reserva y volver al inicio
-    this.pasoActual = 1;
-    this.router.navigate(['/mis-citas']);
+    const primerDiaMes = new Date(anio, mes, 1).getDay(); // 0 es Domingo
+    // Ajuste para que Lunes sea el primer día (index 0)
+    const inicioDiferencia = primerDiaMes === 0 ? 6 : primerDiaMes - 1;
+    this.diasPrevios = Array(inicioDiferencia).fill(0);
+
+    const ultimoDiaMes = new Date(anio, mes + 1, 0).getDate();
+    this.diasDelMes = Array.from({ length: ultimoDiaMes }, (_, i) => i + 1);
   }
-}
+
+  cambiarMes(delta: number) {
+    this.fechaCalendario.setMonth(this.fechaCalendario.getMonth() + delta);
+    this.fechaCalendario = new Date(this.fechaCalendario); // Forzar detección de cambios
+    this.generarCalendario();
+  }
+
+  seleccionarFecha(dia: number) {
+    const fechaSeleccionada = new Date(this.anioActual, this.fechaCalendario.getMonth(), dia);
+    // Guardar en formato YYYY-MM-DD para compatibilidad
+    this.reserva.fecha = fechaSeleccionada.toISOString().split('T')[0];
+  }
+
+  esHoy(dia: number): boolean {
+    const hoy = new Date();
+    return hoy.getDate() === dia && 
+           hoy.getMonth() === this.fechaCalendario.getMonth() && 
+           hoy.getFullYear() === this.anioActual;
+  }
+
+  esSeleccionado(dia: number): boolean {
+    if (!this.reserva.fecha) return false;
+    const sel = new Date(this.reserva.fecha + 'T00:00:00');
+    return sel.getDate() === dia && 
+           sel.getMonth() === this.fechaCalendario.getMonth() && 
+           sel.getFullYear() === this.anioActual;
+  }
 }

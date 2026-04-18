@@ -1,92 +1,108 @@
-<div class="gestion-container">
-  <header class="header-section">
-    <h1>Gestión de Servicios</h1>
-    <button class="btn-agregar" (click)="abrirModal()">
-      <i class="bi bi-plus"></i> Agregar Servicio
-    </button>
+<div class="module-container">
+  <header class="module-header">
+    <div class="header-content">
+      <h1>Gestión de Servicios</h1>
+      <p>Administra el catálogo y las categorías de Sanbella</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-secondary" (click)="abrirModalCategoria()">+ Categoría</button>
+      <button class="btn-primary" (click)="abrirModal('nuevo')">+ Nuevo Servicio</button>
+    </div>
   </header>
 
-  <div class="table-card">
-    <div class="table-responsive">
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Duración</th>
-            <th>Precio</th>
-            <th class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (servicio of serviciosPaginados; track servicio.id) {
-            <tr>
-              <td>{{ servicio.nombre }}</td>
-              <td>{{ servicio.categoria }}</td>
-              <td>{{ servicio.duracion }}</td>
-              <td>{{ servicio.precio }}</td>
-              <td class="acciones-cell">
-                <button class="btn-icon edit" (click)="abrirModal(servicio)">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button class="btn-icon delete" (click)="eliminarServicio(servicio.id)">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          } @empty {
-            <tr>
-              <td colspan="5" class="text-center">No hay servicios registrados.</td>
-            </tr>
-          }
-        </tbody>
-      </table>
+  <div class="action-bar">
+    <div class="filters-container">
+      <input type="text" placeholder="Nombre del servicio..." [(ngModel)]="filtroNombre" class="filter-input">
+      <select [(ngModel)]="filtroCategoria" class="filter-select">
+        <option value="">Todas las Categorías</option>
+        <option *ngFor="let cat of categoriasDisponibles" [value]="cat">{{ cat }}</option>
+      </select>
+      <select [(ngModel)]="filtroEstado" class="filter-select">
+        <option value="">Todos los Estados</option>
+        <option value="Habilitado">Habilitado</option>
+        <option value="Inhabilitado">Inhabilitado</option>
+      </select>
     </div>
+  </div>
 
-    <div class="pagination-bar" *ngIf="totalPaginas > 1">
-      <button [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">Anterior</button>
-      <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
-      <button [disabled]="paginaActual === totalPaginas" (click)="cambiarPagina(paginaActual + 1)">Siguiente</button>
-    </div>
+  <div class="data-card">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Acciones</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Tiempo</th>
+          <th>Precio</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let servicio of serviciosFiltrados">
+          <td class="actions-cell">
+            <button class="btn-icon view" (click)="abrirModal('ver', servicio)" title="Visualizar">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn-icon edit" (click)="abrirModal('editar', servicio)" title="Editar">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon delete" (click)="toggleEstado(servicio)" 
+                    [title]="servicio.estado === 'Habilitado' ? 'Inhabilitar' : 'Habilitar'">
+              <i class="bi" [ngClass]="servicio.estado === 'Habilitado' ? 'bi-slash-circle' : 'bi-check-circle'"></i>
+            </button>
+          </td>
+          <td><strong>{{ servicio.nombre }}</strong></td>
+          <td>{{ servicio.categoria }}</td>
+          <td>{{ servicio.tiempo }}</td>
+          <td><strong>{{ servicio.precio }}</strong></td>
+          <td>
+            <span [class]="servicio.estado === 'Habilitado' ? 'status-active' : 'status-inactive'">
+              {{ servicio.estado }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <div class="modal-overlay" *ngIf="mostrarModal">
   <div class="modal-content">
     <div class="modal-header">
-      <h2>{{ esEdicion ? 'Editar Servicio' : 'Nuevo Servicio' }}</h2>
-      <button class="close-btn" (click)="cerrarModal()">&times;</button>
+      <h2>{{ modoModal === 'ver' ? 'Detalles' : (modoModal === 'editar' ? 'Editar' : 'Nuevo') }} Servicio</h2>
+      <button class="btn-close-x" (click)="cerrarModal()">&times;</button>
     </div>
-    
-    <form (ngSubmit)="guardarServicio()">
-      <div class="form-grid">
-        <div class="field">
-          <label>Nombre del Servicio</label>
-          <input type="text" name="nombre" [(ngModel)]="formServicio.nombre" required placeholder="Ej. Manicure">
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Nombre del Servicio</label>
+        <input type="text" [(ngModel)]="formServicio.nombre" [disabled]="modoModal === 'ver'" placeholder="Ej. Corte de Dama">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Categoría</label>
+          <select [(ngModel)]="formServicio.categoria" [disabled]="modoModal === 'ver'">
+            <option *ngFor="let cat of categoriasDisponibles" [value]="cat">{{ cat }}</option>
+          </select>
         </div>
-        <div class="field">
-  <label>Categoría</label>
-  <select name="categoria" [(ngModel)]="formServicio.categoria" required>
-    <option value="" disabled selected>Seleccione una categoría</option>
-    @for (cat of categoriasDisponibles; track cat) {
-      <option [value]="cat">{{ cat }}</option>
-    }
-  </select>
-</div>
-        <div class="field">
-          <label>Duración</label>
-          <input type="text" name="duracion" [(ngModel)]="formServicio.duracion" required placeholder="Ej. 60 min">
-        </div>
-        <div class="field">
+        <div class="form-group">
           <label>Precio</label>
-          <input type="text" name="precio" [(ngModel)]="formServicio.precio" required>
+          <input type="text" [(ngModel)]="formServicio.precio" [disabled]="modoModal === 'ver'">
         </div>
       </div>
-      
-      <div class="modal-actions">
-        <button type="button" class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
-        <button type="submit" class="btn-save">{{ esEdicion ? 'Actualizar' : 'Guardar' }}</button>
+
+      <div class="form-group">
+        <label>Duración (Tiempo)</label>
+        <input type="text" [(ngModel)]="formServicio.tiempo" [disabled]="modoModal === 'ver'" placeholder="Ej. 45 min">
       </div>
-    </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel-modal" (click)="cerrarModal()">{{ modoModal === 'ver' ? 'Cerrar' : 'Cancelar' }}</button>
+      <button *ngIf="modoModal !== 'ver'" class="btn-save-modal" (click)="guardarServicio()">
+        {{ modoModal === 'editar' ? 'Actualizar' : 'Registrar' }}
+      </button>
+    </div>
   </div>
 </div>

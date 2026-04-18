@@ -1,0 +1,125 @@
+<div class="module-container">
+    <header class="module-header">
+        <h1>Gestión de Clientes</h1>
+        <p>Administra la base de datos de clientes de Sanbella</p>
+    </header>
+
+    <div class="action-bar">
+        <div class="filters-container">
+            <input type="text" placeholder="Nombre completo..." [(ngModel)]="filtroNombre" class="filter-input">
+            <input type="text" placeholder="N° Documento..." [(ngModel)]="filtroDoc" class="filter-input">
+            <select [(ngModel)]="filtroEstado" class="filter-select">
+                <option value="">Todos los Estados</option>
+                <option value="Habilitado">Habilitado</option>
+                <option value="Inhabilitado">Inhabilitado</option>
+            </select>
+        </div>
+        <button class="btn-primary" (click)="abrirModal('nuevo')">+ Nuevo Cliente</button>
+    </div>
+
+    <div class="data-card">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>Acciones</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Tipo Doc</th>
+                    <th>N° Documento</th>
+                    <th>Contacto</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cliente of clientesFiltrados">
+                    <td class="actions-cell">
+                        <button class="btn-icon view" (click)="abrirModal('ver', cliente)" title="Visualizar">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn-icon edit" (click)="abrirModal('editar', cliente)" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn-icon reset" (click)="restablecerPassword(cliente)" title="Restablecer Contraseña">
+                            <i class="bi bi-key"></i>
+                        </button>
+                        <button class="btn-icon delete" (click)="toggleEstado(cliente)" 
+                                [title]="cliente.Estado === 'Habilitado' ? 'Inhabilitar' : 'Habilitar'">
+                            <i class="bi" [ngClass]="cliente.Estado === 'Habilitado' ? 'bi-person-dash' : 'bi-person-check'"></i>
+                        </button>
+                    </td>
+                    <td><strong>{{ cliente.Nombre }}</strong></td>
+                    <td>{{ cliente.Apellido }}</td>
+                    <td>{{ cliente.TipoDocumento }}</td>
+                    <td>{{ cliente.NDocumento }}</td>
+                    <td>
+                        <div class="contact-info">
+                            <span class="email-text">{{ cliente.correo }}</span>
+                            <span class="phone-text">{{ cliente.celular }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span [class]="cliente.Estado === 'Habilitado' ? 'status-active' : 'status-inactive'">
+                            {{ cliente.Estado }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>{{ modoModal === 'ver' ? 'Detalles' : (modoModal === 'editar' ? 'Editar' : 'Nuevo') }} Cliente</h2>
+            <button class="btn-close-x" (click)="cerrarModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" [(ngModel)]="nuevoCliente.Nombre" [disabled]="modoModal === 'ver'">
+                </div>
+                <div class="form-group">
+                    <label>Apellido</label>
+                    <input type="text" [(ngModel)]="nuevoCliente.Apellido" [disabled]="modoModal === 'ver'">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tipo Doc.</label>
+                    <select [(ngModel)]="nuevoCliente.TipoDocumento" [disabled]="modoModal === 'ver'">
+                        <option value="DNI">DNI</option>
+                        <option value="CE">CE</option>
+                        <option value="Pasaporte">Pasaporte</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>N° Documento</label>
+                    <input type="text" [(ngModel)]="nuevoCliente.NDocumento" [disabled]="modoModal === 'ver'">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <input type="email" [(ngModel)]="nuevoCliente.correo" [disabled]="modoModal === 'ver'">
+            </div>
+
+            <div class="form-group">
+                <label>Celular</label>
+                <input type="text" [(ngModel)]="nuevoCliente.celular" [disabled]="modoModal === 'ver'">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-cancel-modal" (click)="cerrarModal()">
+                {{ modoModal === 'ver' ? 'Cerrar' : 'Cancelar' }}
+            </button>
+            <button *ngIf="modoModal !== 'ver'" class="btn-save-modal" (click)="guardarCliente()">
+                {{ modoModal === 'editar' ? 'Actualizar' : 'Registrar' }}
+            </button>
+        </div>
+    </div>
+</div>
