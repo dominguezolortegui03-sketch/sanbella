@@ -1,0 +1,108 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--light-gray) 0%, #e0e0e0 100%);
+  padding: 20px;
+}
+
+/* Nota: La clase .sanbella-card ya trae el fondo blanco y sombra desde styles.css */
+.sanbella-card {
+  width: 100%;
+  max-width: 400px; /* Un poco más angosta que el registro para que se vea estilizada */
+  text-align: center;
+}
+
+.sanbella-card h2 {
+  color: var(--primary-purple);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--neutral-gray);
+  margin-bottom: 30px;
+  font-size: 0.95rem;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--primary-purple);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.forgot-password a {
+  color: var(--neutral-gray);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  color: var(--primary-purple);
+  text-decoration: underline;
+}
+/* ... Tus estilos anteriores ... */
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-container .input-sanbella {
+  padding-right: 45px; /* Espacio para que el texto no choque con el ojo */
+  width: 100%;
+}
+
+.btn-eye {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--primary-purple);
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  transition: opacity 0.2s;
+}
+
+.btn-eye:hover {
+  opacity: 0.7;
+}
+
+/* Estilo para el botón de inicio de sesión si no lo tenías definido */
+.btn-sanbella {
+  width: 100%;
+  background-color: var(--primary-purple);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-sanbella:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}

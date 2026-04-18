@@ -1,0 +1,130 @@
+<div class="module-container fade-in">
+  <header class="module-header">
+    <div class="header-content">
+      <h1>Gestión de Servicios</h1>
+      <p>Administra el catálogo y las categorías de Sanbella</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-filter-trigger" (click)="mostrarFiltros = true">
+        <i class="bi bi-funnel"></i> Filtros
+      </button>
+      <button class="btn-secondary" (click)="abrirModalCategoria()">
+        <i class="bi bi-tags"></i> + Categoría
+      </button>
+      <button class="btn-primary" (click)="abrirModal('nuevo')">
+        <i class="bi bi-plus-lg"></i> Nuevo Servicio
+      </button>
+    </div>
+  </header>
+
+  <div class="modal-overlay" *ngIf="mostrarFiltros" (click)="mostrarFiltros = false">
+    <div class="filter-sidebar" [class.active]="mostrarFiltros" (click)="$event.stopPropagation()">
+      <div class="filter-sidebar-header">
+        <h2>Filtrar Catálogo</h2>
+        <button class="close-btn" (click)="mostrarFiltros = false">&times;</button>
+      </div>
+      <div class="filter-body">
+        <div class="filter-item">
+          <label>Nombre del Servicio</label>
+          <input type="text" placeholder="Buscar servicio..." [(ngModel)]="filtros.nombre" class="filter-input">
+        </div>
+        <div class="filter-item">
+          <label>Categoría</label>
+          <select [(ngModel)]="filtros.categoria" class="filter-select">
+            <option value="">Todas las Categorías</option>
+            <option *ngFor="let cat of categoriasDisponibles" [value]="cat">{{ cat }}</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>Estado</label>
+          <select [(ngModel)]="filtros.estado" class="filter-select">
+            <option value="">Todos los Estados</option>
+            <option value="Habilitado">Habilitado</option>
+            <option value="Inhabilitado">Inhabilitado</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-footer">
+        <button class="btn-reset" (click)="limpiarFiltros()">Limpiar</button>
+        <button class="btn-apply" (click)="mostrarFiltros = false">Aplicar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Acciones</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Tiempo</th>
+          <th>Precio</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let servicio of serviciosFiltrados">
+          <td class="actions-cell">
+            <button class="btn-icon view" (click)="abrirModal('ver', servicio)" title="Visualizar">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn-icon edit" (click)="abrirModal('editar', servicio)" title="Editar">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon delete" (click)="toggleEstado(servicio)" 
+                    [title]="servicio.estado === 'Habilitado' ? 'Inhabilitar' : 'Habilitar'">
+              <i class="bi" [ngClass]="servicio.estado === 'Habilitado' ? 'bi-slash-circle' : 'bi-check-circle'"></i>
+            </button>
+          </td>
+          <td><strong>{{ servicio.nombre }}</strong></td>
+          <td><span class="category-tag">{{ servicio.categoria }}</span></td>
+          <td><i class="bi bi-clock-history"></i> {{ servicio.tiempo }}</td>
+          <td><span class="price-text">{{ servicio.precio }}</span></td>
+          <td>
+            <span [class]="servicio.estado === 'Habilitado' ? 'status-active' : 'status-inactive'">
+              {{ servicio.estado }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ modoModal === 'ver' ? 'Detalles' : (modoModal === 'editar' ? 'Editar' : 'Nuevo') }} Servicio</h2>
+      <button class="btn-close-x" (click)="cerrarModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Nombre del Servicio</label>
+        <input type="text" [(ngModel)]="formServicio.nombre" [disabled]="modoModal === 'ver'" placeholder="Ej. Manicure Spa">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Categoría</label>
+          <select [(ngModel)]="formServicio.categoria" [disabled]="modoModal === 'ver'">
+            <option *ngFor="let cat of categoriasDisponibles" [value]="cat">{{ cat }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Precio</label>
+          <input type="text" [(ngModel)]="formServicio.precio" [disabled]="modoModal === 'ver'">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Duración (Tiempo)</label>
+        <input type="text" [(ngModel)]="formServicio.tiempo" [disabled]="modoModal === 'ver'" placeholder="Ej. 60 min">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel-modal" (click)="cerrarModal()">{{ modoModal === 'ver' ? 'Cerrar' : 'Cancelar' }}</button>
+      <button *ngIf="modoModal !== 'ver'" class="btn-save-modal" (click)="guardarServicio()">
+        {{ modoModal === 'editar' ? 'Actualizar' : 'Registrar' }}
+      </button>
+    </div>
+  </div>
+</div>

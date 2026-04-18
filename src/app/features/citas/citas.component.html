@@ -1,0 +1,128 @@
+<div class="booking-container fade-in">
+  <div class="stepper">
+    <div class="step" [class.active]="pasoActual >= 1">1</div>
+    <div class="line"></div>
+    <div class="step" [class.active]="pasoActual >= 2">2</div>
+    <div class="line"></div>
+    <div class="step" [class.active]="pasoActual >= 3">3</div>
+    <div class="line"></div>
+    <div class="step" [class.active]="pasoActual >= 4">4</div>
+    <div class="line"></div>
+    <div class="step" [class.active]="pasoActual >= 5">5</div>
+  </div>
+
+  <div [ngSwitch]="pasoActual" class="step-content">
+    
+    <div *ngSwitchCase="1" class="fade-in">
+      <h2 class="text-primary">Selecciona tu servicio</h2>
+      <div class="form-group mb-20">
+        <label>¿Qué categoría buscas?</label>
+        <select class="input-sanbella" [(ngModel)]="reserva.categoria" (change)="filtrarServicios()">
+          <option value="" disabled>Selecciona una opción...</option>
+          <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <div class="grid-layout" *ngIf="reserva.categoria">
+        <div *ngFor="let s of serviciosFiltrados" 
+             (click)="seleccionarServicio(s)" 
+             class="sanbella-card btn-selection"
+             [class.selected]="reserva.servicio === s.nombre">
+          <strong>{{ s.nombre }}</strong>
+          <span class="price">S/ {{ s.precio }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="2" class="fade-in">
+  <h2 class="text-primary text-center">¿Cuándo vienes?</h2>
+  
+  <div class="calendar-container sanbella-card">
+    <div class="calendar-header">
+      <button (click)="cambiarMes(-1)" class="btn-nav"><i class="bi bi-chevron-left"></i></button>
+      <h3 class="month-title">{{ nombreMesActual }} {{ anioActual }}</h3>
+      <button (click)="cambiarMes(1)" class="btn-nav"><i class="bi bi-chevron-right"></i></button>
+    </div>
+
+    <div class="calendar-weekdays">
+      <div *ngFor="let dia of diasSemana">{{ dia }}</div>
+    </div>
+
+    <div class="calendar-grid">
+      <div *ngFor="let empty of diasPrevios" class="calendar-day empty"></div>
+      
+      <div *ngFor="let dia of diasDelMes" 
+           class="calendar-day" 
+           [class.today]="esHoy(dia)"
+           [class.selected]="esSeleccionado(dia)"
+           (click)="seleccionarFecha(dia)">
+        {{ dia }}
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-layout mt-30" *ngIf="reserva.fecha">
+    <p class="full-width text-center subtitle">Horarios disponibles para el {{ reserva.fecha | date:'dd/MM' }}</p>
+    <div *ngFor="let h of horasDisponibles" 
+         (click)="seleccionarHora(h)" 
+         class="sanbella-card btn-selection"
+         [class.selected]="reserva.hora === h">
+      {{ h }}
+    </div>
+  </div>
+</div>
+
+    <div *ngSwitchCase="3" class="fade-in">
+      <h2 class="text-primary">Tu Especialista</h2>
+      <div class="grid-layout mt-20">
+        <div *ngFor="let esp of especialistasDisponibles" 
+             (click)="seleccionarEspecialista(esp)" 
+             class="sanbella-card btn-selection">
+          <strong>{{ esp.nombre }}</strong>
+          <small>{{ esp.especialidad }}</small>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="4" class="fade-in">
+      <h2 class="text-primary">Identificación</h2>
+      
+      <div *ngIf="!isLogged && !continuarComoInvitado" class="sanbella-card text-center">
+        <button class="btn-sanbella w-100 mb-10" (click)="irALogin()">Iniciar Sesión</button>
+        <button class="btn-guest w-100" (click)="continuarComoInvitado = true">Continuar como Invitado</button>
+      </div>
+
+      <div *ngIf="continuarComoInvitado && !isLogged" class="sanbella-card">
+        <div class="form-group">
+          <label>Nombre y Apellido</label>
+          <input type="text" [(ngModel)]="invitado.nombre" class="input-sanbella">
+        </div>
+        <div class="form-group mt-15">
+          <label>Celular</label>
+          <input type="tel" [(ngModel)]="invitado.celular" class="input-sanbella">
+        </div>
+        <button (click)="validarInvitado()" class="btn-sanbella w-100 mt-20">Siguiente</button>
+      </div>
+
+      <div *ngIf="isLogged" class="sanbella-card">
+        <h3>Hola, {{ usuarioLogueado.nombre }}</h3>
+        <button (click)="pasoActual = 5" class="btn-sanbella w-100 mt-20">Continuar</button>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="5" class="fade-in">
+      <h2 class="text-primary">Resumen de Cita</h2>
+      <div class="sanbella-card confirmation-card">
+        <div class="resumen-row"><span>Servicio:</span> <strong>{{ reserva.servicio }}</strong></div>
+        <div class="resumen-row"><span>Especialista:</span> <strong>{{ reserva.especialista }}</strong></div>
+        <div class="resumen-row"><span>Fecha:</span> <strong>{{ reserva.fecha }} - {{ reserva.hora }}</strong></div>
+        <div class="resumen-row"><span>Cliente:</span> <strong>{{ nombreCliente }}</strong></div>
+        <div class="resumen-row highlight"><span>Total a pagar:</span> <strong>S/ {{ reserva.precio }}</strong></div>
+        
+        <button (click)="confirmarCita()" class="btn-sanbella w-100 mt-30">CONFIRMAR RESERVA</button>
+      </div>
+    </div>
+  </div>
+
+  <button *ngIf="pasoActual > 1 && pasoActual < 5" (click)="pasoAnterior()" class="btn-back mt-20">← Volver</button>
+</div>

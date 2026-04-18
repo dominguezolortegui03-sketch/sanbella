@@ -1,0 +1,150 @@
+<div class="module-container fade-in">
+  <header class="module-header">
+    <div class="header-content">
+      <h1>Mis Citas Asignadas</h1>
+      <p>Gestión y ejecución de servicios en tiempo real</p>
+    </div>
+    <div class="top-action-bar">
+      <button class="btn-filter-trigger" (click)="mostrarFiltros = true">
+        <i class="bi bi-funnel"></i> Filtrar Búsqueda
+      </button>
+    </div>
+  </header>
+
+  <div class="modal-overlay" *ngIf="mostrarFiltros" (click)="mostrarFiltros = false">
+    <div class="filter-sidebar" [class.active]="mostrarFiltros" (click)="$event.stopPropagation()">
+      <div class="filter-sidebar-header">
+        <h2>Filtros</h2>
+        <button class="close-btn" (click)="mostrarFiltros = false">&times;</button>
+      </div>
+      <div class="filter-body">
+        <div class="filter-item">
+          <label>Estado</label>
+          <select [(ngModel)]="filtros.estado" class="filter-input">
+            <option value="">Todos</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="En Proceso">En Proceso</option>
+            <option value="Finalizado">Finalizado</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>Servicio</label>
+          <input type="text" [(ngModel)]="filtros.servicio" placeholder="Buscar servicio..." class="filter-input">
+        </div>
+        <div class="filter-item">
+          <label>Cliente</label>
+          <input type="text" [(ngModel)]="filtros.cliente" placeholder="Nombre del cliente..." class="filter-input">
+        </div>
+        <div class="filter-item">
+          <label>Fecha</label>
+          <input type="date" [(ngModel)]="filtros.fecha" class="filter-input">
+        </div>
+      </div>
+      <div class="filter-footer">
+        <button class="btn-reset" (click)="limpiarFiltros()">Limpiar</button>
+        <button class="btn-save-modal" (click)="mostrarFiltros = false">Aplicar Filtros</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Servicio</th>
+          <th>Fecha y Hora</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cita of citasFiltradas">
+          <td><strong class="client-name">{{ cita.cliente }}</strong></td>
+          <td>{{ cita.servicio }}</td>
+          <td>
+            <div class="datetime-cell">
+              <span><i class="bi bi-calendar3"></i> {{ cita.fecha }}</span>
+              <span class="time-tag">{{ cita.hora }}</span>
+            </div>
+          </td>
+          <td>
+            <span [class]="'status-badge ' + cita.estado.toLowerCase().replace(' ', '-')">
+              {{ cita.estado }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button class="btn-icon view" (click)="verDetalles(cita)" title="Visualizar">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button *ngIf="cita.estado === 'Pendiente'" class="btn-icon start" (click)="iniciarServicio(cita)" title="Iniciar">
+              <i class="bi bi-play-fill"></i>
+            </button>
+            <button *ngIf="cita.estado === 'En Proceso'" class="btn-icon end" (click)="finalizarServicio(cita)" title="Finalizar">
+              <i class="bi bi-stop-fill"></i>
+            </button>
+            <button class="btn-icon evidence" (click)="abrirEvidencia(cita)" title="Evidencia">
+              <i class="bi bi-camera"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarDetalles" (click)="mostrarDetalles = false">
+  <div class="modal-content detail-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2><i class="bi bi-info-circle"></i> Detalles de la Cita</h2>
+      <button class="btn-close-x" (click)="mostrarDetalles = false">&times;</button>
+    </div>
+    <div class="modal-body" *ngIf="citaSeleccionada">
+      <div class="info-grid">
+        <div class="info-item"><span>Cliente</span><p>{{ citaSeleccionada.cliente }}</p></div>
+        <div class="info-item"><span>Servicio</span><p>{{ citaSeleccionada.servicio }}</p></div>
+        <div class="info-item"><span>Fecha</span><p>{{ citaSeleccionada.fecha }}</p></div>
+        <div class="info-item"><span>Hora</span><p>{{ citaSeleccionada.hora }}</p></div>
+        <div class="info-item full"><span>Estado Actual</span>
+          <p><span [class]="'status-badge ' + citaSeleccionada.estado.toLowerCase().replace(' ', '-')">{{ citaSeleccionada.estado }}</span></p>
+        </div>
+        <div class="info-item highlight"><span>Fecha y Hora Inicio</span><p>{{ citaSeleccionada.fechaInicio || '---' }}</p></div>
+        <div class="info-item highlight"><span>Fecha y Hora Fin</span><p>{{ citaSeleccionada.fechaFin || '---' }}</p></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel-modal" (click)="mostrarDetalles = false">Cerrar Ventana</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarEvidencia" (click)="mostrarEvidencia = false">
+  <div class="modal-content evidence-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2><i class="bi bi-camera"></i> Subir Evidencias</h2>
+      <button class="btn-close-x" (click)="mostrarEvidencia = false">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p class="instruction-text">Adjunta fotos del trabajo realizado para <strong>{{ citaSeleccionada?.cliente }}</strong>.</p>
+      
+      <div class="upload-zone" (click)="fileInput.click()">
+        <i class="bi bi-cloud-arrow-up"></i>
+        <span>Arrastra o haz clic para subir fotos</span>
+        <input #fileInput type="file" (change)="onFileSelected($event)" hidden multiple accept="image/*">
+      </div>
+
+      <div class="preview-grid" *ngIf="imagenesEvidencia.length > 0">
+        <div class="preview-item" *ngFor="let img of imagenesEvidencia; let i = index">
+          <img [src]="img" alt="Vista previa">
+          <button class="btn-remove-img" (click)="imagenesEvidencia.splice(i, 1)">&times;</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel-modal" (click)="mostrarEvidencia = false">Cancelar</button>
+      <button class="btn-save-modal" (click)="guardarEvidencia()" [disabled]="imagenesEvidencia.length === 0">
+        Confirmar Evidencias
+      </button>
+    </div>
+  </div>
+</div>

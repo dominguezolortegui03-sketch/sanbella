@@ -1,4 +1,4 @@
-<div class="servicios-page">
+<div class="servicios-page fade-in">
   <div class="header-section">
     <h2>Nuestros Servicios</h2>
     <div class="divider"></div>
@@ -15,8 +15,13 @@
         <p>{{ s.desc }}</p>
         
         <div class="card-footer">
-          <span class="price">S/ {{ s.price }}</span>
-          <button class="btn-book">Reservar</button>
+          <div class="price-container">
+            <span style="font-size: 0.8rem; display: block; color: #999;">Desde</span>
+            <span class="price">S/ {{ s.price }}</span>
+          </div>
+          <button class="btn-sanbella btn-reserve" (click)="irACitas()">
+            Reservar
+          </button>
         </div>
       </div>
     </div>

@@ -1,0 +1,84 @@
+/* Contenedor PADRE */
+.admin-container {
+  display: flex;
+  width: 100%;
+  height: 100vh; /* Altura total de la ventana */
+  overflow: hidden; /* Evita scroll doble en la raíz */
+}
+
+/* Contenido Principal (Derecha) */
+.main-layout {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto; /* El scroll ocurre aquí */
+  background-color: #fafbfc;
+  position: relative; /* Referencia para elementos internos */
+}
+
+/* Área donde cargan las vistas (Sanbella) */
+.dynamic-content {
+  padding: 30px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+  .admin-container {
+    flex-direction: column; /* Sidebar arriba, contenido abajo en móviles */
+  }
+
+  .sidebar-wrapper {
+    width: 100% !important;
+    height: auto !important;
+    border-right: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .dynamic-content {
+    padding: 15px; /* Menos espacio en móviles */
+  }
+}.modal-overlay {
+  position: fixed;    /* Se fija a la ventana del navegador (viewport) */
+  top: 0;
+  left: 0;
+  width: 100%;        /* Ocupa todo el ancho */
+  height: 100%;       /* Ocupa todo el alto */
+  background: rgba(0, 0, 0, 0.6); 
+  backdrop-filter: blur(8px); /* Efecto Sanbella Glassmorphism */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;     /* Máxima prioridad */
+  padding: 20px;      /* Margen de seguridad para móviles */
+}
+
+.modal-content {
+  background: white;
+  width: 100%;
+  max-width: 550px;   /* Ancho máximo en escritorio */
+  max-height: 90vh;   /* No se sale de la pantalla */
+  border-radius: 28px;
+  padding: 25px;
+  overflow-y: auto;   /* Scroll interno si el contenido es mucho */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: modalEntrance 0.4s cubic-bezier(0.17, 0.84, 0.44, 1);
+}
+
+/* Animación suave de entrada */
+@keyframes modalEntrance {
+  from { opacity: 0; transform: translateY(50px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Ajuste específico para móviles */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 20px;
+    border-radius: 20px;
+    margin: 10px;
+  }
+}

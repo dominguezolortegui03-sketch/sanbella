@@ -1,7 +1,10 @@
-<app-navbar></app-navbar>
+<div class="main-container">
 
-<main class="main-content">
-  <router-outlet></router-outlet>
-</main>
+  <div class="content-area">
+    <app-navbar></app-navbar>
 
-<app-footer></app-footer>
+    <div class="scrollable-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

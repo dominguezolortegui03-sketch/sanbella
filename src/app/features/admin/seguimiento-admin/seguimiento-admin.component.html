@@ -1,0 +1,141 @@
+<div class="module-container fade-in">
+  <header class="module-header">
+    <div class="header-content">
+      <h1>Módulo: Seguimiento</h1>
+      <p>Gestión y monitoreo de citas activas en Sanbella</p>
+    </div>
+    <div class="top-action-bar">
+      <button class="btn-filter-trigger" (click)="mostrarFiltros = true">
+        <i class="bi bi-funnel"></i> Filtrar Citas
+      </button>
+    </div>
+  </header>
+
+  <div class="modal-overlay" *ngIf="mostrarFiltros" (click)="mostrarFiltros = false">
+    <div class="filter-sidebar" [class.active]="mostrarFiltros" (click)="$event.stopPropagation()">
+      <div class="filter-sidebar-header">
+        <h2>Filtros de Búsqueda</h2>
+        <button class="close-btn" (click)="mostrarFiltros = false">&times;</button>
+      </div>
+      <div class="filter-body">
+        <div class="filter-item">
+          <label>Cliente</label>
+          <input type="text" placeholder="Nombre del cliente..." [(ngModel)]="filtros.cliente" class="filter-input">
+        </div>
+        <div class="filter-item">
+          <label>Especialista</label>
+          <input type="text" placeholder="Nombre del doctor..." [(ngModel)]="filtros.especialista" class="filter-input">
+        </div>
+        <div class="filter-item">
+          <label>Fecha de Cita</label>
+          <input type="date" [(ngModel)]="filtros.fecha" class="filter-input">
+        </div>
+        <div class="filter-item">
+          <label>Servicio</label>
+          <select [(ngModel)]="filtros.servicio" class="filter-select">
+            <option value="">Todos los Servicios</option>
+            <option value="Limpieza Facial">Limpieza Facial</option>
+            <option value="Peeling Químico">Peeling Químico</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>Estado</label>
+          <select [(ngModel)]="filtros.estado" class="filter-select">
+            <option value="">Todos los Estados</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Completado">Completado</option>
+            <option value="Cancelado">Cancelado</option>
+            <option value="Inhabilitado">Inhabilitado</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-footer">
+        <button class="btn-reset" (click)="limpiarFiltros()">Limpiar</button>
+        <button class="btn-apply" (click)="mostrarFiltros = false">Aplicar Filtros</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Acciones</th>
+          <th>Cliente</th>
+          <th>Servicio</th>
+          <th>F. Registro</th>
+          <th>Cita (Fecha/Hora)</th>
+          <th>Especialista</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cita of citasFiltradas">
+          <td class="actions-cell">
+            <button class="btn-icon view" (click)="abrirModal('ver', cita)" title="Visualizar">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn-icon edit" (click)="abrirModal('reprogramar', cita)" title="Reprogramar">
+              <i class="bi bi-calendar-event"></i>
+            </button>
+            <button class="btn-icon delete" (click)="abrirModal('cancelar', cita)" title="Cancelar">
+              <i class="bi bi-x-circle"></i>
+            </button>
+            <button class="btn-icon reset" (click)="toggleEstado(cita)" title="Cambiar Estado">
+              <i class="bi" [ngClass]="cita.estado === 'Inhabilitado' ? 'bi-toggle-off' : 'bi-toggle-on'"></i>
+            </button>
+          </td>
+          <td><strong>{{ cita.cliente }}</strong></td>
+          <td>{{ cita.servicio }}</td>
+          <td>{{ cita.fechaRegistro }}</td>
+          <td>{{ cita.fechaCita }} <small class="text-muted">{{ cita.horaCita }}</small></td>
+          <td>{{ cita.especialista }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="cita.estado.toLowerCase()">
+              {{ cita.estado }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 style="text-transform: capitalize;">{{ modoModal }} Cita</h2>
+      <button class="btn-close-x" (click)="cerrarModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="modoModal === 'ver'" class="detalle-view">
+        <div class="info-item"><label>Emisión:</label> <span>{{ citaSeleccionada.fechaRegistro }}</span></div>
+        <div class="info-item"><label>Cita Programada:</label> <span>{{ citaSeleccionada.fechaCita }} {{ citaSeleccionada.horaCita }}</span></div>
+        <div class="info-item"><label>Cliente:</label> <span>{{ citaSeleccionada.cliente }}</span></div>
+        <div class="info-item"><label>Especialista:</label> <span>{{ citaSeleccionada.especialista }}</span></div>
+        <div class="info-item"><label>Servicio:</label> <span>{{ citaSeleccionada.servicio }}</span></div>
+      </div>
+
+      <div *ngIf="modoModal !== 'ver'">
+        <div class="form-group" *ngIf="modoModal === 'reprogramar'">
+          <label>Nueva Fecha y Hora</label>
+          <input type="datetime-local" [(ngModel)]="nuevaFecha">
+        </div>
+        <div class="form-group">
+          <label>Motivo de {{ modoModal }}</label>
+          <textarea rows="3" [(ngModel)]="motivoAccion" placeholder="Escriba el motivo aquí..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel-modal" (click)="cerrarModal()">
+        {{ modoModal === 'ver' ? 'Cerrar' : 'Volver' }}
+      </button>
+      <button *ngIf="modoModal !== 'ver'" class="btn-save-modal" (click)="procesarAccion()">
+        Confirmar {{ modoModal }}
+      </button>
+    </div>
+  </div>
+</div>

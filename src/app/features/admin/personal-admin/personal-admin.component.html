@@ -1,0 +1,87 @@
+<div class="personal-container">
+  <header class="header-section">
+    <h1>Gestión de Personal</h1>
+    <button class="btn-agregar" (click)="abrirModal()">
+      <i class="bi bi-plus"></i> Agregar Personal
+    </button>
+  </header>
+
+  <div class="cards-grid">
+    @for (persona of personal; track persona.id) {
+      <div class="personal-card">
+        <div class="card-top">
+          <div class="avatar-circle">
+            <i class="bi bi-person"></i>
+          </div>
+          <div class="info-texto">
+            <h2>{{ persona.nombre }}</h2>
+            <p class="puesto">{{ persona.puesto }}</p>
+          </div>
+        </div>
+
+        <div class="horario-section">
+          <h3>Horario Semanal</h3>
+          <div class="horario-row">
+            <span>{{ persona.horarioSemana.dias }}:</span>
+            <span class="horas">{{ persona.horarioSemana.horas }}</span>
+          </div>
+          <div class="horario-row">
+            <span>{{ persona.horarioFinSemana.dias }}:</span>
+            <span class="horas">{{ persona.horarioFinSemana.horas }}</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="btn-editar" (click)="abrirModal(persona)">Editar Horario</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ esEdicion ? 'Editar Horario' : 'Nuevo Personal' }}</h2>
+      <button class="btn-close" (click)="cerrarModal()">&times;</button>
+    </div>
+
+    <form (ngSubmit)="guardarPersonal()">
+      <div class="form-body">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" name="nombre" [(ngModel)]="formPersonal.nombre" required placeholder="Ej: Sarah Jones">
+        </div>
+
+       <div class="form-group">
+  <label>Especialidad / Puesto</label>
+  <select name="puesto" [(ngModel)]="formPersonal.puesto" required>
+    <option value="" disabled selected>Seleccione una especialidad</option>
+    @for (esp of especialidades; track esp) {
+      <option [value]="esp">{{ esp }}</option>
+    }
+  </select>
+</div>
+
+        <hr>
+        <p class="section-title">Configuración de Horario</p>
+        
+        <div class="horario-fields">
+          <div class="form-group">
+            <label>{{ formPersonal.horarioSemana.dias }}</label>
+            <input type="text" name="horasSemana" [(ngModel)]="formPersonal.horarioSemana.horas" placeholder="9:00 AM - 5:00 PM">
+          </div>
+          <div class="form-group">
+            <label>{{ formPersonal.horarioFinSemana.dias }}</label>
+            <input type="text" name="horasFinSemana" [(ngModel)]="formPersonal.horarioFinSemana.horas" placeholder="10:00 AM - 4:00 PM">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+        <button type="submit" class="btn-save">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>

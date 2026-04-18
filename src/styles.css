@@ -1,1 +1,310 @@
-/* You can add global styles to this file, and also import other style files */
+/* ==========================================================================
+   1. VARIABLES DE MARCA
+   ========================================================================== */
+:root {
+  --primary-purple: #6A1B9A;
+  --primary-light: #cf86ff;
+  --accent-gold: #ffd000;
+  --accent-gold-light: #ffd95c;
+  --neutral-gray: #757575;
+  --light-gray: #F5F5F5;
+  --pure-white: #FFFFFF;
+  --border-color: #eee; /* Nueva variable para bordes suaves */
+  
+  --shadow-standard: 0 10px 25px rgba(0,0,0,0.05), 0 20px 48px rgba(106, 27, 154, 0.1);
+  --shadow-button: 0 4px 6px rgba(0,0,0,0.1);
+  --main-font: 'Quicksand', sans-serif;
+}
+
+/* ==========================================================================
+   2. RESET Y BASE
+   ========================================================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--main-font);
+  background-color: var(--light-gray);
+  color: #444;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   3. COMPONENTES GLOBALES (BOTONES ACTUALIZADOS)
+   ========================================================================== */
+
+/* Botón Base (Reset) */
+.btn-sanbella, .btn-action {
+  font-family: var(--main-font);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 12px 28px;
+  border-radius: 50px; /* Estilo píldora ultra estético */
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+}
+
+.btn-sanbella:hover, .btn-action:hover {
+  background-color: #eab8fd;
+  transform: translateY(-3px);
+}
+
+/* 1. Botón Primario (Dorado Sanbella) - Para acciones principales */
+.btn-sanbella-primary {
+  background-color: var(--accent-gold);
+  color: var(--primary-purple) !important;
+  box-shadow: 0 4px 15px rgba(255, 208, 0, 0.3);
+}
+
+.btn-sanbella-primary:hover {
+  background-color: var(--accent-gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 208, 0, 0.4);
+}
+
+/* 2. Botón Secundario (Morado) - Para guardar o confirmar */
+.btn-sanbella-secondary {
+  background-color: var(--primary-purple);
+  color: var(--pure-white) !important;
+  box-shadow: 0 4px 15px rgba(106, 27, 154, 0.2);
+}
+
+.btn-sanbella-secondary:hover {
+  background-color: #7B1FA2;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(106, 27, 154, 0.3);
+}
+
+/* 3. Botón Outlined (Borde Morado) - Para "Cancelar" o "Volver" */
+.btn-sanbella-outline {
+  background-color: transparent;
+  color: var(--primary-purple) !important;
+  border: 2px solid var(--primary-purple);
+}
+
+.btn-sanbella-outline:hover {
+  background-color: rgba(106, 27, 154, 0.05);
+  transform: translateY(-2px);
+}
+
+/* 4. Botón de Peligro (Rojo Suave) - Para eliminar o cancelar citas */
+.btn-sanbella-danger {
+  background-color: #fff1f1;
+  color: #d32f2f !important;
+  border: 1px solid #ffcdd2;
+}
+
+.btn-sanbella-danger:hover {
+  background-color: #d32f2f;
+  color: var(--pure-white) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+}
+
+/* Estado Deshabilitado */
+.btn-sanbella:disabled {
+  background-color: #e0e0e0 !important;
+  color: #9e9e9e !important;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+
+/* Inputs y Selects unificados */
+.input-sanbella, .select-custom {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #fdf2f2;
+  border-radius: 12px;
+  outline: none;
+  font-family: var(--main-font);
+  transition: 0.3s;
+  background-color: white;
+}
+
+.input-sanbella:focus, .select-custom:focus {
+  border-color: var(--primary-purple);
+}
+
+.select-custom {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A1B9A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+/* ==========================================================================
+   4. ESTRUCTURAS DE FORMULARIO Y LAYOUT
+   ========================================================================== */
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--primary-purple);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+/* Separador elegante para el login/registro */
+.separator {
+  margin: 25px 0;
+  position: relative;
+  text-align: center;
+}
+
+.separator::before {
+  content: ""; position: absolute; top: 50%; left: 0;
+  width: 100%; height: 1px; background: var(--border-color);
+}
+
+.separator span {
+  background: var(--pure-white); padding: 0 10px; color: #999;
+  position: relative; z-index: 2; font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   5. UTILIDADES RÁPIDAS (HELPERS)
+   ========================================================================== */
+.w-100 { width: 100%; }
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
+.mb-20 { margin-bottom: 20px; }
+.text-primary { color: var(--primary-purple); }
+.fade-in { animation: fadeIn 0.4s ease-out forwards; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   ESTILO DEL STEPPER (FLUJO DE PASOS)
+   ========================================================================== */
+.stepper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0; /* Quitamos el gap para que la línea toque los círculos */
+  margin-bottom: 40px;
+  padding: 20px;
+}
+
+.step {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e0e0e0; /* Color apagado para pasos pendientes */
+  color: var(--neutral-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-family: var(--main-font);
+  transition: all 0.4s ease;
+  z-index: 2;
+  border: 3px solid var(--pure-white); /* Crea un efecto de separación con la línea */
+}
+
+/* Paso Activo o Completado */
+.step.active {
+  background-color: var(--primary-purple);
+  color: var(--pure-white);
+  box-shadow: 0 4px 10px rgba(106, 27, 154, 0.3);
+  transform: scale(1.1); /* Se hace un poquito más grande */
+}
+
+/* La línea conectora */
+.line {
+  width: 50px; /* Ajusta el largo de la conexión */
+  height: 3px;
+  background-color: #e0e0e0;
+  margin: 0 -5px; /* Ajuste para que entre un poquito bajo el círculo */
+  z-index: 1;
+  transition: background-color 0.4s ease;
+}
+
+/* Línea activa (cuando el siguiente paso ya está activo) */
+/* Si quieres que la línea también se pinte, podrías usar una lógica de clases en el HTML */
+.line-active {
+  background-color: var(--primary-purple);
+}
+
+/* --- ESTADOS DE CITAS (GLOBAL) --- */
+.status-pill {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-pending   { background-color: #fff3cd; color: #856404; }
+.status-completed { background-color: #d4edda; color: #155724; }
+.status-cancelled { background-color: #f8d7da; color: #721c24; }
+
+/* --- BOTONES DE ACCIÓN RÁPIDA --- */
+.btn-action {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: var(--main-font);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.3s;
+  border: 1px solid transparent;
+}
+
+.btn-action-cancel {
+  background-color: #f2f2f2;
+  color: #d32f2f;
+}
+
+.btn-action-cancel:hover {
+  background-color: #ffebee;
+}
+
+/*NAVBAR Y SIDEBAR*/
+.main-container {
+  display: flex;
+  height: 100vh; /* Obliga al contenedor a medir lo mismo que la pantalla */
+  width: 100%;
+  overflow: hidden; /* IMPORTANTE: El contenedor principal no debe tener scroll */
+}
+
+.content-area {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* El área derecha también mide el alto de la pantalla */
+  overflow: hidden; /* El scroll no va aquí todavía */
+}
+
+/* Este es el nuevo contenedor que debes envolver tu <main> o <router-outlet> */
+.scrollable-content {
+  flex-grow: 1;
+  overflow-y: auto; /* AQUÍ es donde permitimos el scroll */
+  padding: 20px;
+}

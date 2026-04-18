@@ -1,120 +1,56 @@
-<section class="hero-full-width">
-  <div class="hero-background">
-    <img src="assets/inicio/principal.avif" alt="Dermaplaning Sanbella">
-    <div class="hero-overlay-gradient"></div>
-  </div>
-
-  <div class="container hero-container-flex">
-    <div class="hero-content-left">
-      <span class="eyebrow">ELEGANCIA & BIENESTAR</span>
-      <h1 class="serif-title main-hero-title">Tu belleza <br> <span class="serif-italic">atemporal</span></h1>
-      <p class="hero-paragraph">
-        En SANBELLA, fusionamos la ciencia estética avanzada con un entorno de serenidad absoluta para revelar tu mejor
-        versión.
-      </p>
-      <div class="hero-actions-group">
-        <button class="btn-luxury">RESERVAR AHORA</button>
-        <a href="#" class="link-discover">Ver tratamientos</a>
-      </div>
+<section class="hero">
+  <div class="overlay"></div>
+  
+  <div class="hero-content fade-in">
+    <h1>Sanbella</h1>
+    <p class="tagline">Tu refugio de tranquilidad y belleza profesional</p>
+    
+    <div class="button-group">
+      <button routerLink="/servicios" class="btn-sanbella btn-sanbella-outline">Ver Catálogo</button>
+      <button routerLink="/citas" class="btn-sanbella btn-sanbella-primary">Reservar Ahora</button>
     </div>
   </div>
 </section>
 
-<section class="philosophy-section">
-  <div class="container philosophy-container">
-    <div class="philosophy-visual">
-      <div class="main-arc-frame">
-        <img src="assets/inicio/Eslogan1.jpg" alt="Spa Atmosphere">
-      </div>
-      <div class="floating-inset-card">
-        <img src="assets/inicio/Eslogan2.jpg" alt="Premium Products">
-      </div>
-    </div>
-    <div class="philosophy-text-content">
-      <span class="eyebrow">NUESTRA FILOSOFÍA</span>
-      <h2 class="serif-title">El arte de cuidar cada detalle</h2>
-      <p class="section-description">Nuestro enfoque personalizado garantiza que cada tratamiento sea una experiencia
-        extraordinaria de salud y amor propio.</p>
-      <ul class="feature-list">
-        <li><span class="custom-dot"></span> Productos Orgánicos y Puros</li>
-        <li><span class="custom-dot"></span> Tecnología de Grado Médico</li>
-        <li><span class="custom-dot"></span> Resultados Naturales y Visibles</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="services-section">
-  <div class="container">
-    <div class="services-header">
-      <h2 class="serif-title">Nuestros Servicios</h2>
-      <a href="#" class="catalog-link">VER CATÁLOGO COMPLETO</a>
-    </div>
-    <div class="bento-wrapper">
-      <div class="bento-main">
-        <img src="assets/inicio/FacialesRejuvenesedores.jpg" alt="Faciales">
-        <div class="bento-overlay">
-          <h3>Faciales Rejuvenecedores</h3>
-        </div>
-      </div>
-      <div class="bento-side-column">
-        <div class="bento-item-small">
-          <img
-            src="assets/inicio/MasajeTerapeuticos.webp"
-            alt="Masajes">
-          <div class="bento-overlay">
-            <h3>Masajes Terapéuticos</h3>
-          </div>
-        </div>
-        <div class="bento-item-small">
-          <img
-            src="assets/inicio/MedicinaEstetica.png"
-            alt="Medicina Estética">
-          <div class="bento-overlay">
-            <h3>Medicina Estética</h3>
-          </div>
+<section class="featured-services container my-5">
+  <h2 class="text-center mb-5 text-primary">Nuestros Servicios Populares</h2>
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img src="/assets/inicio/limpiezafacial.jpg" class="card-img-top" alt="Limpieza Facial">
+        <div class="card-body text-center p-4">
+          <h5 class="card-title">Cuidado Facial</h5>
+          <p class="card-text text-muted">Tratamientos rejuvenecedores adaptados a tu tipo de piel.</p>
+          <button class="btn-sanbella btn-sanbella-outline mt-3">Saber más</button>
         </div>
       </div>
     </div>
-  </div>
+    </div>
 </section>
 
-<section class="testimonials-section">
+<section class="benefits bg-light py-5">
+
   <div class="container">
-    <div class="test-header">
-      <span class="eyebrow">EXPERIENCIAS</span>
-      <h2 class="serif-title">Testimonios Reales</h2>
-    </div>
-    <div class="test-cards-row">
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p class="test-text">"Una experiencia transformadora. No solo por los resultados en mi piel, sino por la paz que
-          se respira."</p>
-        <div class="test-author"><strong>Lucía Méndez</strong><span>CLIENTE DESDE 2023</span></div>
+    <div class="row text-center">
+      <div class="col-md-4">
+        <i class="bi bi-star-fill fs-1 text-gold"></i>
+        <h4 class="mt-3">Especialistas Certificados</h4>
+        <p class="text-muted">Tu salud y belleza están en las mejores manos.</p>
       </div>
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p class="test-text">"El nivel de profesionalismo es inigualable. Los tratamientos son, sencillamente, los
-          mejores."</p>
-        <div class="test-author"><strong>Adrián Torres</strong><span>CLIENTE FRECUENTE</span></div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section class="cta-final-section">
-  <div class="container">
-    <div class="wood-textured-card">
-      <div class="cta-content-inner">
-        <h2 class="serif-title white">Reserva tu primera consulta</h2>
-        <p class="white-text">Permítenos diseñar un plan de cuidado facial personalizado para ti.</p>
-        <button routerLink="/Reserva" class="btn-primary">Reservar Ahora</button>
+      <div class="col-md-4">
+        <i class="bi bi-heart-fill fs-1 text-gold"></i>
+        <h4 class="mt-3">Ambiente Relajante</h4>
+        <p class="text-muted">Diseñado para que desconectes del mundo exterior.</p>
+      </div>
+
+      <div class="col-md-4">
+        <i class="bi bi-calendar-check-fill fs-1 text-gold"></i>
+        <h4 class="mt-3">Reserva Online</h4>
+        <p class="text-muted">Gestiona tus citas de forma rápida y sencilla.</p>
       </div>
     </div>
-  </div>
-</section>
 
-<footer class="minimal-footer">
-  <div class="footer-divider"></div>
-  <span class="footer-brand">SANBELLA</span>
-</footer>
+  </div>
+
+</section>

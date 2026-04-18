@@ -1,13 +1,19 @@
-<nav class="navbar">
-  <div class="nav-container">
-    <div class="logo">SANBELLA</div>
-    <div class="links">
-      <a routerLink="/" routerLinkActive="active-link">Inicio</a>
-      <!-- <a routerLink="/">Nosotros</a> -->
-      <a routerLink="/servicios" routerLinkActive="active-link">Servicios</a>
-      <a routerLink="/miscitas" routerLinkActive="active-link">Citas</a>
-      <a routerLink="/panelAdmin" routerLinkActive="active-link">Panel Admin</a>
-      <button class="btn-cita" routerLink="/reserva">Reservar</button>
-    </div>
+<nav class="navbar-shell">
+  
+
+  <button class="hamburger" (click)="toggleMenu()">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+
+  <div class="menu" [class.active]="isMenuOpen">
+    <a routerLink="/inicio" routerLinkActive="active" (click)="isMenuOpen = false">Inicio</a>
+    <a routerLink="/servicios" routerLinkActive="active" (click)="isMenuOpen = false">Servicios</a>
+    <a routerLink="/mis-citas" routerLinkActive="active" (click)="isMenuOpen = false">Mis Citas</a>
+    <a routerLink="/panel-admin" routerLinkActive="active" (click)="isMenuOpen = false">Administrador</a>
+    <a routerLink="/especialista-cita" routerLinkActive="active" (click)="isMenuOpen = false">Agenda</a>
+    <button routerLink="/citas" class="btn-sanbella" (click)="isMenuOpen = false">Reservar</button>
+    <button routerLink="/login" class="btn-sanbella" (click)="isMenuOpen = false">Iniciar Sesión</button>
   </div>
 </nav>

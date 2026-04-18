@@ -1,0 +1,167 @@
+<div class="module-container fade-in">
+  <header class="module-header">
+    <div class="header-content">
+      <h1>Gestión de Personal</h1>
+      <p>Administra los perfiles, roles y accesos de Sanbella</p>
+    </div>
+    <div class="top-action-bar">
+      <button class="btn-filter-trigger" (click)="mostrarFiltros = true">
+        <i class="bi bi-funnel"></i> Filtros
+      </button>
+      <button class="btn-primary" (click)="abrirModal('nuevo')">
+        <i class="bi bi-person-plus-fill"></i> Nuevo Usuario
+      </button>
+    </div>
+  </header>
+
+  <div class="modal-overlay" *ngIf="mostrarFiltros" (click)="mostrarFiltros = false">
+    <div class="filter-sidebar" [class.active]="mostrarFiltros" (click)="$event.stopPropagation()">
+      <div class="filter-sidebar-header">
+        <h2>Filtrar Personal</h2>
+        <button class="close-btn" (click)="mostrarFiltros = false">&times;</button>
+      </div>
+      <div class="filter-body">
+        <div class="filter-item">
+          <label>Nombre del Colaborador</label>
+          <input type="text" placeholder="Ej: Marco Arroyo" [(ngModel)]="filtros.nombre" class="filter-input">
+        </div>
+        <div class="filter-item">
+          <label>N° Documento</label>
+          <input type="text" placeholder="DNI / CE" [(ngModel)]="filtros.doc" class="filter-input">
+        </div>
+        <div class="filter-item">
+          <label>Rol en el Centro</label>
+          <select [(ngModel)]="filtros.rol" class="filter-select">
+            <option value="">Todos los Roles</option>
+            <option value="Estilista">Estilista</option>
+            <option value="Recepcionista">Recepcionista</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>Estado</label>
+          <select [(ngModel)]="filtros.estado" class="filter-select">
+            <option value="">Todos los Estados</option>
+            <option value="Habilitado">Habilitado</option>
+            <option value="Inhabilitado">Inhabilitado</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-footer">
+        <button class="btn-reset" (click)="limpiarFiltros()">Limpiar</button>
+        <button class="btn-apply" (click)="mostrarFiltros = false">Aplicar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Acciones</th>
+          <th>Colaborador</th>
+          <th>Rol</th>
+          <th>Documento</th>
+          <th>Contacto</th>
+          <th>Estado</th>
+          <th>Registro</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuariosFiltrados">
+          <td class="actions-cell">
+            <button class="btn-icon view" (click)="abrirModal('ver', usuario)" title="Ver Detalle">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn-icon edit" (click)="abrirModal('editar', usuario)" title="Editar">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-icon reset" (click)="restablecerPassword(usuario)" title="Contraseña">
+              <i class="bi bi-key"></i>
+            </button>
+            <button class="btn-icon delete" (click)="toggleEstado(usuario)" 
+                    [title]="usuario.Estado === 'Habilitado' ? 'Inhabilitar' : 'Habilitar'">
+              <i class="bi" [ngClass]="usuario.Estado === 'Habilitado' ? 'bi-person-dash' : 'bi-person-check'"></i>
+            </button>
+          </td>
+          <td><strong>{{ usuario.Nombre }} {{ usuario.Apellido }}</strong></td>
+          <td>
+            <span class="badge" [ngClass]="{'badge-blue': usuario.Rol === 'Estilista', 'badge-orange': usuario.Rol === 'Recepcionista'}">
+              {{ usuario.Rol }}
+            </span>
+          </td>
+          <td><small>{{ usuario.TipoDocumento }}:</small> {{ usuario.NDocumento }}</td>
+          <td>
+            <div class="contact-info">
+              <span class="email-text">{{ usuario.correo }}</span>
+              <span class="phone-text">{{ usuario.celular }}</span>
+            </div>
+          </td>
+          <td>
+            <span [class]="usuario.Estado === 'Habilitado' ? 'status-active' : 'status-inactive'">
+              {{ usuario.Estado }}
+            </span>
+          </td>
+          <td>{{ usuario.FechaRegistro }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ modoModal === 'ver' ? 'Detalles' : (modoModal === 'editar' ? 'Editar' : 'Nuevo') }} Usuario</h2>
+      <button class="btn-close-x" (click)="cerrarModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" [(ngModel)]="nuevoUsuario.Nombre" [disabled]="modoModal === 'ver'">
+        </div>
+        <div class="form-group">
+          <label>Apellido</label>
+          <input type="text" [(ngModel)]="nuevoUsuario.Apellido" [disabled]="modoModal === 'ver'">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Rol</label>
+          <select [(ngModel)]="nuevoUsuario.Rol" [disabled]="modoModal === 'ver'">
+            <option value="Estilista">Estilista</option>
+            <option value="Recepcionista">Recepcionista</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tipo Doc.</label>
+          <select [(ngModel)]="nuevoUsuario.TipoDocumento" [disabled]="modoModal === 'ver'">
+            <option value="DNI">DNI</option>
+            <option value="Pasaporte">Pasaporte</option>
+            <option value="CE">CE</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>N° Documento</label>
+        <input type="text" [(ngModel)]="nuevoUsuario.NDocumento" [disabled]="modoModal === 'ver'">
+      </div>
+      <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input type="email" [(ngModel)]="nuevoUsuario.correo" [disabled]="modoModal === 'ver'">
+      </div>
+      <div class="form-group">
+        <label>Celular</label>
+        <input type="text" [(ngModel)]="nuevoUsuario.celular" [disabled]="modoModal === 'ver'">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel-modal" (click)="cerrarModal()">
+        {{ modoModal === 'ver' ? 'Cerrar' : 'Cancelar' }}
+      </button>
+      <button *ngIf="modoModal !== 'ver'" class="btn-save-modal" (click)="guardarUsuario()">
+        {{ modoModal === 'editar' ? 'Actualizar' : 'Registrar' }}
+      </button>
+    </div>
+  </div>
+</div>
