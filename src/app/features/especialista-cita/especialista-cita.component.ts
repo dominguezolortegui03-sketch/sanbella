@@ -21,6 +21,9 @@ interface Cita {
   styleUrl: './especialista-cita.component.css'
 })
 export class EspecialistaCitasComponent {
+
+  mostrarFiltros: boolean = false;
+
   filtros = { estado: '', servicio: '', cliente: '', fecha: '' };
   
   citas: Cita[] = [

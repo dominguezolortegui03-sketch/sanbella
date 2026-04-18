@@ -16,6 +16,11 @@ interface SiderbarOption{
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
+  isCollapsed = false;
+
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
+  }
  menuOptions: SiderbarOption[]=[
   {icon:'assets/sidebarIcon/seguridad.svg',label:'Módulo 1: Gestion cliente',route:'/panel-admin/gestion-cliente'},
   {icon:'assets/sidebarIcon/seguridad.svg',label:'Módulo 2: Gestion Personal',route:'/panel-admin/gestion-personal'},

@@ -1,13 +1,21 @@
-/* SECCIÓN HERO */
+/* ==========================================================================
+   INICIO - ESTILO PREMIUM
+   ========================================================================== */
+
+/* TIPOGRAFÍA: Usaremos Quicksand para todo el sitio */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap');
+
+/* SECCIÓN HERO REVENTADA */
 .hero {
   position: relative;
-  height: 80vh;
+  height: 90vh; /* Un poco más alta para impacto */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: white;
+  color: var(--pure-white);
   background: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2070') center/cover no-repeat;
+  font-family: var(--main-font);
 }
 
 .hero .overlay {
@@ -16,98 +24,77 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, rgba(106, 27, 154, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
   z-index: 1;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  padding: 0 20px;
+  max-width: 800px;
 }
 
 .hero-content h1 {
-  font-size: 4rem;
-  font-family: 'Playfair Display', serif;
-  margin-bottom: 0.5rem;
-  letter-spacing: 4px;
+  font-size: 5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+  background: linear-gradient(to right, #fff, var(--accent-gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-content .tagline {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 300;
-  margin-bottom: 2.5rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  margin-bottom: 3rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-/* BOTONES */
-.button-group {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-}
-
-.button-group button {
-  padding: 15px 35px;
-  border-radius: 50px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-}
-
-/* Botón Catálogo */
-.btn-secondary {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white !important;
-  border: 2px solid white !important;
-  backdrop-filter: blur(5px);
-}
-
-.btn-secondary:hover {
-  background-color: white;
-  color: #b07d7d !important;
-  transform: translateY(-3px);
-}
-
-/* Botón Reservar (Sanbella) */
-.btn-sanbella {
-  background-color: #b07d7d;
-  color: white !important;
-  box-shadow: 0 4px 15px rgba(176, 125, 125, 0.3);
-}
-
-.btn-sanbella:hover {
-  background-color: #946666;
-  transform: translateY(-3px);
-}
-/* Ajustes para las Tarjetas de Servicios */
+/* TARJETAS DE SERVICIOS MEJORADAS */
 .featured-services .card {
-  transition: transform 0.3s ease;
-  border: none;
-  border-radius: 15px;
+  border-radius: 20px;
   overflow: hidden;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: all 0.4s ease;
+  background: white;
 }
 
 .featured-services .card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-15px);
+  box-shadow: 0 20px 40px rgba(106, 27, 154, 0.1);
 }
 
-.featured-services img {
-  height: 200px;
-  object-fit: cover;
-}
-
-/* Iconos de Beneficios */
-.benefits i {
-  color: #d4af37; /* Color Oro */
-  margin-bottom: 1rem;
-}
-
-/* Tipografía de títulos */
-h2 {
-  font-family: 'Playfair Display', serif;
+.featured-services .card-title {
+  color: var(--primary-purple);
   font-weight: 700;
-  color: #333;
+  margin-top: 10px;
+}
+
+/* SECCIÓN BENEFICIOS */
+.benefits {
+  background-color: #fdfaff; /* El morado ultra suave que usamos en el sidebar */
+  border-radius: 50px 50px 0 0; /* Curva estética */
+}
+
+.text-gold {
+  color: var(--accent-gold) !important;
+}
+
+/* TESTIMONIOS */
+.testimonials {
+  background: white;
+  position: relative;
+}
+
+.testimonials .blockquote p {
+  font-size: 1.5rem;
+  color: var(--primary-purple);
+  font-weight: 500;
+}
+
+.testimonials .blockquote-footer {
+  color: var(--accent-gold);
+  font-weight: 700;
 }

@@ -1,100 +1,125 @@
 .servicios-page {
   padding: 60px 5%;
-  background-color: #fffaf5; /* Crema muy suave */
+  background-color: #fdfaff; /* Morado ultra suave global */
   min-height: 100vh;
-
-  .header-section {
-    text-align: center;
-    margin-bottom: 50px;
-    h2 {
-      font-family: 'Playfair Display', serif;
-      color: #b07d7d;
-      font-size: 2.5rem;
-      letter-spacing: 2px;
-    }
-    .divider {
-      width: 60px;
-      height: 3px;
-      background: #d4af37; /*Dorado*/
-      margin: 10px auto;
-    }
-  }
+  font-family: var(--main-font); /* Usando Quicksand global */
 }
 
+/* Header con estilo de marca */
+.header-section {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.header-section h2 {
+  color: var(--primary-purple);
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  letter-spacing: -1px;
+}
+
+.header-section .divider {
+  width: 80px;
+  height: 4px;
+  background: var(--accent-gold); /* Dorado de la marca */
+  border-radius: 10px;
+  margin: 15px auto;
+}
+
+/* Grid de servicios */
 .servicios-grid {
   display: grid;
-  /*Este comando crea las 3 columnas y se ajusta a 2 si la pantalla es pequeña*/
   grid-template-columns: repeat(3, 1fr); 
-  gap: 30px;
+  gap: 35px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Tarjeta Estética */
 .service-card {
-  background: white;
-  border-radius: 15px;
+  background: var(--pure-white);
+  border-radius: 24px; /* Más redondeado, estilo Sanbella */
   overflow: hidden;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.03);
-  transition: transform 0.3s ease;
-  border: 1px solid #fdf2f2;
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(176, 125, 125, 0.1);
-  }
-
-  .image-wrapper {
-    height: 200px;
-    overflow: hidden;
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
-  .card-content {
-    padding: 25px;
-    position: relative;
-    min-height: 180px;
-    display: flex;
-    flex-direction: column;
-
-    h3 {
-      font-family: 'Montserrat', sans-serif;
-      color: #4a4a4a;
-      font-size: 1.2rem;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
-    }
-
-    p {
-      color: #888;
-      font-size: 0.95rem;
-      line-height: 1.5;
-      margin-bottom: 40px;
-    }
-
-    .card-footer {
-      margin-top: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .price {
-        font-weight: 700;
-        color: #b07d7d;
-        font-size: 1.1rem;
-        /*Posición inferior izquierda asegurada por el flex*/
-      }
-    }
-  }
+  box-shadow: 0 10px 25px rgba(106, 27, 154, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(106, 27, 154, 0.05);
+  display: flex;
+  flex-direction: column;
 }
 
-/* Para que en celulares se vea 1 por fila y no se rompa */
-@media (max-width: 992px) {
+.service-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 40px rgba(106, 27, 154, 0.12);
+}
+
+.image-wrapper {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.service-card:hover .image-wrapper img {
+  transform: scale(1.1); /* Efecto zoom suave al pasar el mouse */
+}
+
+/* Contenido de la Tarjeta */
+.card-content {
+  padding: 30px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-content h3 {
+  color: var(--primary-purple);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.card-content p {
+  color: var(--neutral-gray);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  flex-grow: 1;
+}
+
+/* Footer de la tarjeta */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid #f8f0fc;
+}
+
+.price {
+  font-weight: 800;
+  color: var(--primary-purple);
+  font-size: 1.3rem;
+}
+
+/* Reutilizando el botón global que definimos antes */
+.btn-reserve {
+  padding: 10px 20px !important;
+  font-size: 0.85rem !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
   .servicios-grid { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 600px) {
+
+@media (max-width: 650px) {
   .servicios-grid { grid-template-columns: 1fr; }
+  .header-section h2 { font-size: 2rem; }
 }

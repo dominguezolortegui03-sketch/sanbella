@@ -2,27 +2,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10%;
+  padding: 0 5%; /* Reducido un poco para que no se vea tan apretado */
   height: 80px;
   background-color: var(--primary-purple);
   border-bottom: 3px solid var(--accent-gold);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  width: 100%; /* Ahora es relativo a .content-area, no a toda la pantalla */
+  box-sizing: border-box; 
+  z-index: 100; /* Asegura que esté por encima del contenido que sube */
+  flex-shrink: 0; /* Evita que el navbar se aplaste */
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* Contenedor del logo */
-.logo-container {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-
-.logo-img {
-  height: 50px; /* Ajusta según el tamaño de tu imagen */
-  width: auto;
-  object-fit: contain;
 }
 
 .menu {
@@ -38,6 +26,7 @@
   font-weight: 700;
   transition: 0.3s;
 }
+
 
 .hamburger {
   display: none;

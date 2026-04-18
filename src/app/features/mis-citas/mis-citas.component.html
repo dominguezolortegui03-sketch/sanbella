@@ -1,11 +1,11 @@
 <div class="panel-container fade-in">
   <header class="panel-header">
     <h1 class="text-primary">Mi Panel</h1>
-    <p class="subtitle">Bienvenido de nuevo, Jesus Dominguez</p>
+    <p class="subtitle">Bienvenido de nuevo, <strong>Jesus Dominguez</strong></p>
   </header>
 
   <section class="citas-section">
-    <h2 class="mb-20">Próximas Citas</h2>
+    <h2 class="mb-20" style="font-weight: 700; color: #555;">Próximas Citas</h2>
     
     <div class="citas-grid">
       <div *ngFor="let cita of citas" class="sanbella-card cita-card">
@@ -20,60 +20,76 @@
 
         <div class="cita-body">
           <div class="info-group">
-            <span class="label">Categoría</span>
+            <span class="label"><i class="bi bi-tag"></i> Categoría</span>
             <span class="value">{{ cita.categoria }}</span>
           </div>
 
           <div class="info-group">
-            <span class="label">Servicio</span>
+            <span class="label"><i class="bi bi-scissors"></i> Servicio</span>
             <span class="value text-primary">{{ cita.servicio }}</span>
           </div>
 
           <div class="info-group">
-            <span class="label">Personal Especialista</span>
+            <span class="label"><i class="bi bi-person-badge"></i> Especialista</span>
             <span class="value">{{ cita.personal }}</span>
           </div>
 
           <div class="info-group">
-            <span class="label">Fecha y Hora</span>
-            <span class="value">{{ cita.fecha }}</span>
+            <span class="label"><i class="bi bi-calendar3"></i> Fecha y Hora</span>
+            <span class="value" style="color: var(--primary-purple);">{{ cita.fecha }}</span>
           </div>
 
           <div class="tolerance-warning">
-            <i class="bi bi-exclamation-triangle-fill"></i>
-            Tolerancia máxima: {{ cita.tolerancia }} minutos
+            <i class="bi bi-clock-history text-gold"></i>
+            <span>Tolerancia de <strong>{{ cita.tolerancia }} min.</strong></span>
           </div>
         </div>
 
         <div class="cita-actions">
-          <button class="btn-sanbella" (click)="verDetalle(cita)">
+          <button class="btn-sanbella btn-sanbella-secondary btn-detail" (click)="verDetalle(cita)">
             Ver Detalle
           </button>
-          <button *ngIf="cita.status === 'pending'" class="btn-action btn-action-cancel" (click)="cancelarCita(cita.id)">
+          <button *ngIf="cita.status === 'pending'" class="btn-sanbella btn-sanbella-danger btn-cancel-small" (click)="cancelarCita(cita.id)">
             Cancelar
           </button>
         </div>
       </div>
     </div>
   </section>
-</div>
+  <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
 
-<div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
   <div class="modal-content sanbella-card" (click)="$event.stopPropagation()">
+
     <div class="modal-header">
+
       <h3>Detalles del Servicio</h3>
+
       <button class="close-btn" (click)="cerrarModal()">&times;</button>
+
     </div>
-    
+
+   
+
     <div class="modal-body" *ngIf="citaSeleccionada">
+
       <div class="detail-row"><span>Estado:</span> <strong>{{ citaSeleccionada.statusLabel }}</strong></div>
+
       <div class="detail-row"><span>Categoría:</span> <strong>{{ citaSeleccionada.categoria }}</strong></div>
+
       <div class="detail-row"><span>Servicio:</span> <strong>{{ citaSeleccionada.servicio }}</strong></div>
+
       <div class="detail-row"><span>Personal:</span> <strong>{{ citaSeleccionada.personal }}</strong></div>
+
       <div class="detail-row"><span>Fecha:</span> <strong>{{ citaSeleccionada.fecha }}</strong></div>
+
       <div class="detail-row highlight"><span>Duración estimada:</span> <strong>{{ citaSeleccionada.tiempo }} min</strong></div>
+
       <div class="detail-row highlight"><span>Precio:</span> <strong>S/ {{ citaSeleccionada.precio | number:'1.2-2' }}</strong></div>
+
       <div class="tolerance-msg">Recordar: Tiene una tolerancia de {{ citaSeleccionada.tolerancia }} min.</div>
+
     </div>
+
   </div>
+
 </div>
