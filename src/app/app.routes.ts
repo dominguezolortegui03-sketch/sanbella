@@ -8,7 +8,7 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { LoginComponent } from './features/auth/login/login.component'; // trae la ruta del flujo de reserva
 import { PanelAdminComponent } from './features/admin/panel-admin/panel-admin.component';
 import { InicioAdminComponent } from './features/admin/inicio-admin/inicio-admin.component';
-import { SeguridadAdminComponent } from './features/admin/seguridad-admin/seguridad-admin.component';
+
 import { SeguimientoAdminComponent } from './features/admin/seguimiento-admin/seguimiento-admin.component';
 import { ServicioAdminComponent } from './features/admin/servicio-admin/servicio-admin.component';
 import { PersonalAdminComponent } from './features/admin/personal-admin/personal-admin.component';

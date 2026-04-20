@@ -77,10 +77,10 @@
             <button class="btn-icon view" (click)="verDetalles(cita)" title="Visualizar">
               <i class="bi bi-eye"></i>
             </button>
-            <button *ngIf="cita.estado === 'Pendiente'" class="btn-icon start" (click)="iniciarServicio(cita)" title="Iniciar">
+            <button *ngIf="cita.estado === 'Pendiente'" class="btn-icon start" (click)="avanzarEstado(cita)" title="Iniciar">
               <i class="bi bi-play-fill"></i>
             </button>
-            <button *ngIf="cita.estado === 'En Proceso'" class="btn-icon end" (click)="finalizarServicio(cita)" title="Finalizar">
+            <button *ngIf="cita.estado === 'En Proceso'" class="btn-icon end" (click)="avanzarEstado(cita)" title="Finalizar">
               <i class="bi bi-stop-fill"></i>
             </button>
             <button class="btn-icon evidence" (click)="abrirEvidencia(cita)" title="Evidencia">

@@ -1,0 +1,5 @@
+[
+  { "id": 1, "nombre": "Prueba desde JSON", "categoria": "Uñas", "tiempo": "60 min", "precio": "S/ 50.00", "estado": "Habilitado" },
+{ "id": 2, "nombre": "Prueba  JSON", "categoria": "Uñas", "tiempo": "60 min", "precio": "S/ 50.00", "estado": "Habilitado" }
+
+]

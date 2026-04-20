@@ -1,15 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core'; // Añadido OnInit e inject
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-export interface Servicio {
-  id: number;
-  nombre: string;
-  categoria: string;
-  tiempo: string;
-  precio: string;
-  estado: 'Habilitado' | 'Inhabilitado';
-}
+import { ServicioAdmin } from '../../../data/interfaces/servicio-admin.interface';
+import { ServicioAdminService } from '../../../data/services/servicio-admin.service';
 
 @Component({
   selector: 'app-servicio-admin',
@@ -18,27 +11,31 @@ export interface Servicio {
   templateUrl: './servicio-admin.component.html',
   styleUrl: './servicio-admin.component.css'
 })
-export class ServicioAdminComponent {
-  // Controles UI
+export class ServicioAdminComponent implements OnInit {
+  private servicioService = inject(ServicioAdminService); // Inyección del servicio
+
+  // Controles UI (Mantengo igual)
   mostrarFiltros = false;
   mostrarModal = false;
   modoModal: 'nuevo' | 'editar' | 'ver' = 'nuevo';
 
-  // Objeto de filtros unificado
-  filtros = {
-    nombre: '',
-    categoria: '',
-    estado: ''
-  };
-
+  filtros = { nombre: '', categoria: '', estado: '' };
   categoriasDisponibles = ['Uñas', 'Pestañas', 'Cabello', 'Rostro', 'Corporal'];
   
-  servicios: Servicio[] = [
-    { id: 1, nombre: 'Manicure Spa', categoria: 'Uñas', tiempo: '60 min', precio: 'S/ 45.00', estado: 'Habilitado' },
-    { id: 2, nombre: 'Corte Varón', categoria: 'Cabello', tiempo: '30 min', precio: 'S/ 30.00', estado: 'Habilitado' }
-  ];
-
+  // Ahora iniciamos vacío
+  servicios: ServicioAdmin[] = [];
   formServicio = this.limpiarForm();
+
+  ngOnInit() {
+    this.cargarServicios();
+  }
+
+  cargarServicios() {
+    this.servicioService.getServicios().subscribe({
+      next: (data) => this.servicios = data,
+      error: (err) => console.error('Error al cargar servicios', err)
+    });
+  }
 
   get serviciosFiltrados() {
     return this.servicios.filter(s => {
@@ -49,11 +46,10 @@ export class ServicioAdminComponent {
     });
   }
 
-  limpiarFiltros() {
-    this.filtros = { nombre: '', categoria: '', estado: '' };
-  }
+  // --- Funcionalidades UI (Se mantienen intactas) ---
+  limpiarFiltros() { this.filtros = { nombre: '', categoria: '', estado: '' }; }
 
-  abrirModal(modo: 'nuevo' | 'editar' | 'ver', servicio?: Servicio) {
+  abrirModal(modo: 'nuevo' | 'editar' | 'ver', servicio?: ServicioAdmin) {
     this.modoModal = modo;
     this.formServicio = modo === 'nuevo' ? this.limpiarForm() : { ...servicio! };
     this.mostrarModal = true;
@@ -61,23 +57,40 @@ export class ServicioAdminComponent {
 
   cerrarModal() { this.mostrarModal = false; }
 
+  // --- Lógica de persistencia conectada al Servicio ---
   guardarServicio() {
     if (this.modoModal === 'editar') {
-      const index = this.servicios.findIndex(s => s.id === this.formServicio.id);
-      if (index !== -1) this.servicios[index] = { ...this.formServicio };
+      this.servicioService.actualizarServicio(this.formServicio.id, this.formServicio).subscribe(() => {
+        const index = this.servicios.findIndex(s => s.id === this.formServicio.id);
+        if (index !== -1) this.servicios[index] = { ...this.formServicio };
+        this.cerrarModal();
+      });
     } else {
-      this.formServicio.id = Date.now();
-      this.servicios.push({ ...this.formServicio });
+      this.servicioService.crearServicio(this.formServicio).subscribe((nuevo) => {
+        this.servicios.push(nuevo);
+        this.cerrarModal();
+      });
     }
-    this.cerrarModal();
   }
 
-  toggleEstado(servicio: Servicio) {
-    const nuevo = servicio.estado === 'Habilitado' ? 'Inhabilitado' : 'Habilitado';
-    if (confirm(`¿Desea cambiar el estado del servicio a ${nuevo}?`)) {
-      servicio.estado = nuevo;
-    }
+ toggleEstado(servicio: ServicioAdmin) {
+ 
+  const estadoAEnviar = servicio.estado === 'Habilitado' ? 'Inhabilitado' : 'Habilitado';
+
+  if (confirm(`¿Desea cambiar el estado del servicio a ${estadoAEnviar}?`)) {
+    
+    this.servicioService.cambiarEstado(servicio.id, estadoAEnviar).subscribe({
+      next: (servicioActualizado: ServicioAdmin) => {
+       
+        servicio.estado = servicioActualizado.estado;
+      },
+      error: (err) => {
+        console.error('Error al cambiar el estado en el servidor:', err);
+        alert('No se pudo actualizar el estado. Intente de nuevo.');
+      }
+    });
   }
+}
 
   abrirModalCategoria() {
     const nueva = prompt('Nombre de la nueva categoría:');
@@ -86,7 +99,7 @@ export class ServicioAdminComponent {
     }
   }
 
-  private limpiarForm(): Servicio {
+  private limpiarForm(): ServicioAdmin {
     return { id: 0, nombre: '', categoria: 'Uñas', tiempo: '', precio: 'S/ ', estado: 'Habilitado' };
   }
 }

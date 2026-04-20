@@ -1,20 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-export interface Usuario {
-  id: string;
-  Nombre: string;
-  Apellido: string;
-  Rol: 'Estilista' | 'Recepcionista';
-  TipoDocumento: string;
-  NDocumento: string;
-  correo: string;
-  celular: string;
-  Estado: 'Habilitado' | 'Inhabilitado';
-  FechaRegistro: string;
-}
-
+import { GestionPersonal } from '../../../data/interfaces/gestion-personal.interface';
+import { GestionPersonalService } from '../../../data/services/gestion-personal.service';
 @Component({
   selector: 'app-gestion-personal',
   standalone: true,
@@ -22,28 +10,28 @@ export interface Usuario {
   templateUrl: './gestion-personal.component.html',
   styleUrl: './gestion-personal.component.css'
 })
-export class GestionPersonalComponent {
-  // Controles UI
+export class GestionPersonalComponent implements OnInit {
+  private usuarioService = inject(GestionPersonalService);
+
   mostrarFiltros: boolean = false;
   mostrarModal: boolean = false;
   modoModal: 'nuevo' | 'editar' | 'ver' = 'nuevo';
 
-  // Filtros
-  filtros = {
-    nombre: '',
-    doc: '',
-    rol: '',
-    estado: ''
-  };
+  filtros = { nombre: '', doc: '', rol: '', estado: '' };
+  usuarios: GestionPersonal[] = [];
+  nuevoUsuario: GestionPersonal = this.initUsuario();
 
-  usuarios: Usuario[] = [
-    { id: '111', Nombre: 'Marco', Apellido: 'Arroyo', Rol: 'Estilista', TipoDocumento: 'DNI', NDocumento: '77554433', correo: 'marco@gmail.com', celular: '9999999', Estado: 'Habilitado', FechaRegistro: '10-02-2026' },
-    { id: '222', Nombre: 'Jesus', Apellido: 'Dominguez', Rol: 'Recepcionista', TipoDocumento: 'DNI', NDocumento: '77554411', correo: 'jesus@gmail.com', celular: '9999988', Estado: 'Habilitado', FechaRegistro: '20-03-2026' }
-  ];
+  ngOnInit() {
+    this.cargarUsuarios();
+  }
 
-  nuevoUsuario: Usuario = this.initUsuario();
+  cargarUsuarios() {
+    this.usuarioService.getUsuarios().subscribe({
+      next: (data) => this.usuarios = data,
+      error: (err) => console.error('Error al cargar personal', err)
+    });
+  }
 
-  // Filtrado Lógico
   get usuariosFiltrados() {
     return this.usuarios.filter(u => {
       const full = `${u.Nombre} ${u.Apellido}`.toLowerCase();
@@ -58,43 +46,51 @@ export class GestionPersonalComponent {
     this.filtros = { nombre: '', doc: '', rol: '', estado: '' };
   }
 
-  // Gestión de Modales
-  abrirModal(modo: 'nuevo' | 'editar' | 'ver', usuario?: Usuario) {
+  abrirModal(modo: 'nuevo' | 'editar' | 'ver', usuario?: GestionPersonal) {
     this.modoModal = modo;
     this.nuevoUsuario = modo === 'nuevo' ? this.initUsuario() : { ...usuario! };
     this.mostrarModal = true;
   }
 
-  cerrarModal() {
-    this.mostrarModal = false;
-  }
+  cerrarModal() { this.mostrarModal = false; }
 
   guardarUsuario() {
     if (this.modoModal === 'editar') {
-      const index = this.usuarios.findIndex(u => u.id === this.nuevoUsuario.id);
-      if (index !== -1) this.usuarios[index] = { ...this.nuevoUsuario };
+      this.usuarioService.actualizarUsuario(this.nuevoUsuario.id, this.nuevoUsuario).subscribe({
+        next: (u) => {
+          const index = this.usuarios.findIndex(user => user.id === u.id);
+          if (index !== -1) this.usuarios[index] = u;
+          this.cerrarModal();
+        }
+      });
     } else {
-      this.nuevoUsuario.id = Math.random().toString(36).substr(2, 9);
+      // Configuramos datos iniciales antes de enviar al back
       this.nuevoUsuario.Estado = 'Habilitado';
-      this.nuevoUsuario.FechaRegistro = new Date().toLocaleDateString();
-      this.usuarios.push({ ...this.nuevoUsuario });
+      this.nuevoUsuario.FechaRegistro = new Date().toLocaleDateString('es-PE');
+      
+      this.usuarioService.crearUsuario(this.nuevoUsuario).subscribe({
+        next: (u) => {
+          this.usuarios.push(u);
+          this.cerrarModal();
+        }
+      });
     }
-    this.cerrarModal();
   }
 
-  // Acciones de Usuario
-  toggleEstado(usuario: Usuario) {
+  toggleEstado(usuario: GestionPersonal) {
     const nuevoEstado = usuario.Estado === 'Habilitado' ? 'Inhabilitado' : 'Habilitado';
     if (confirm(`¿Desea cambiar el estado de ${usuario.Nombre} a ${nuevoEstado}?`)) {
-      usuario.Estado = nuevoEstado;
+      this.usuarioService.cambiarEstado(usuario.id, nuevoEstado).subscribe({
+        next: (res) => usuario.Estado = res.Estado
+      });
     }
   }
 
-  restablecerPassword(usuario: Usuario) {
+  restablecerPassword(usuario: GestionPersonal) {
     alert(`Enlace de recuperación enviado al correo: ${usuario.correo}`);
   }
 
-  private initUsuario(): Usuario {
+  private initUsuario(): GestionPersonal {
     return { id: '', Nombre: '', Apellido: '', Rol: 'Estilista', TipoDocumento: 'DNI', NDocumento: '', correo: '', celular: '', Estado: 'Habilitado', FechaRegistro: '' };
   }
 }

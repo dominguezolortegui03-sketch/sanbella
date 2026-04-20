@@ -1,17 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-export interface Cita {
-  id: string;
-  cliente: string;
-  servicio: string;
-  fechaRegistro: string;
-  fechaCita: string;
-  horaCita: string;
-  especialista: string;
-  estado: 'Pendiente' | 'Completado' | 'Cancelado' | 'Inhabilitado';
-}
+import { SeguimientoAdmin } from '../../../data/interfaces/seguimiento-admin.interface';
+import { SeguimientoAdminService } from '../../../data/services/seguimiento-admin.service';
 
 @Component({
   selector: 'app-seguimiento-admin',
@@ -20,32 +11,31 @@ export interface Cita {
   templateUrl: './seguimiento-admin.component.html',
   styleUrl: './seguimiento-admin.component.css'
 })
-export class SeguimientoAdminComponent {
-  
-  // Controles de UI
-  mostrarFiltros: boolean = false;
-  mostrarModal: boolean = false;
+export class SeguimientoAdminComponent implements OnInit {
+  private citaService = inject(SeguimientoAdminService);
+
+  mostrarFiltros = false;
+  mostrarModal = false;
   modoModal: 'ver' | 'reprogramar' | 'cancelar' = 'ver';
 
-  // Objeto de filtros unificado
-  filtros = {
-    cliente: '',
-    especialista: '',
-    fecha: '',
-    servicio: '',
-    estado: ''
-  };
-
+  filtros = { cliente: '', especialista: '', fecha: '', servicio: '', estado: '' };
+  citas: SeguimientoAdmin[] = [];
+  
   citaSeleccionada: any = {};
   motivoAccion: string = '';
   nuevaFecha: string = '';
 
-  citas: Cita[] = [
-    { id: 'sc_01', cliente: 'Ana García', servicio: 'Limpieza Facial', fechaRegistro: '15/04/2026', fechaCita: '2026-04-20', horaCita: '10:00', especialista: 'Dra. Claudia', estado: 'Pendiente' },
-    { id: 'sc_02', cliente: 'Luis Paez', servicio: 'Peeling Químico', fechaRegistro: '16/04/2026', fechaCita: '2026-04-18', horaCita: '15:30', especialista: 'Dr. Marco', estado: 'Completado' }
-  ];
+  ngOnInit() {
+    this.cargarCitas();
+  }
 
-  // Lógica de filtrado reactivo
+  cargarCitas() {
+    this.citaService.getCitas().subscribe({
+      next: (data) => this.citas = data,
+      error: (err) => console.error('Error al cargar citas', err)
+    });
+  }
+
   get citasFiltradas() {
     return this.citas.filter(c => {
       const matchCliente = c.cliente.toLowerCase().includes(this.filtros.cliente.toLowerCase());
@@ -53,7 +43,6 @@ export class SeguimientoAdminComponent {
       const matchFecha = this.filtros.fecha === '' || c.fechaCita === this.filtros.fecha;
       const matchServicio = this.filtros.servicio === '' || c.servicio === this.filtros.servicio;
       const matchEstado = this.filtros.estado === '' || c.estado === this.filtros.estado;
-
       return matchCliente && matchEspecialista && matchFecha && matchServicio && matchEstado;
     });
   }
@@ -62,7 +51,7 @@ export class SeguimientoAdminComponent {
     this.filtros = { cliente: '', especialista: '', fecha: '', servicio: '', estado: '' };
   }
 
-  abrirModal(modo: 'ver' | 'reprogramar' | 'cancelar', cita: Cita) {
+  abrirModal(modo: 'ver' | 'reprogramar' | 'cancelar', cita: SeguimientoAdmin) {
     this.modoModal = modo;
     this.citaSeleccionada = { ...cita };
     this.motivoAccion = '';
@@ -73,28 +62,36 @@ export class SeguimientoAdminComponent {
   cerrarModal() { this.mostrarModal = false; }
 
   procesarAccion() {
-    const index = this.citas.findIndex(c => c.id === this.citaSeleccionada.id);
-    if (index !== -1) {
-      if (this.modoModal === 'cancelar') {
-        this.citas[index].estado = 'Cancelado';
-        // Lógica adicional: Enviar motivoAccion al servidor
-      } else if (this.modoModal === 'reprogramar') {
-        if (this.nuevaFecha) {
-          const [fecha, hora] = this.nuevaFecha.split('T');
-          this.citas[index].fechaCita = fecha;
-          this.citas[index].horaCita = hora;
-          this.citas[index].estado = 'Pendiente';
-        }
-      }
+    let cambios: Partial<SeguimientoAdmin> = {};
+
+    if (this.modoModal === 'cancelar') {
+      cambios = { estado: 'Cancelado' };
+    } else if (this.modoModal === 'reprogramar' && this.nuevaFecha) {
+      const [fecha, hora] = this.nuevaFecha.split('T');
+      cambios = { 
+        fechaCita: fecha, 
+        horaCita: hora, 
+        estado: 'Pendiente' 
+      };
     }
-    this.cerrarModal();
+
+    if (Object.keys(cambios).length > 0) {
+      this.citaService.actualizarCita(this.citaSeleccionada.id, cambios).subscribe({
+        next: (citaActualizada) => {
+          const index = this.citas.findIndex(c => c.id === citaActualizada.id);
+          if (index !== -1) this.citas[index] = citaActualizada;
+          this.cerrarModal();
+        }
+      });
+    }
   }
 
-  toggleEstado(cita: Cita) {
+  toggleEstado(cita: SeguimientoAdmin) {
     const nuevoEstado = cita.estado === 'Inhabilitado' ? 'Pendiente' : 'Inhabilitado';
-    const msg = `¿Desea cambiar el estado de la cita a ${nuevoEstado}?`;
-    if (confirm(msg)) {
-      cita.estado = nuevoEstado;
+    if (confirm(`¿Desea cambiar el estado de la cita a ${nuevoEstado}?`)) {
+      this.citaService.actualizarCita(cita.id, { estado: nuevoEstado }).subscribe({
+        next: (res) => cita.estado = res.estado
+      });
     }
   }
 }

@@ -1,17 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface Cita {
-  id: number;
-  cliente: string;
-  servicio: string;
-  fecha: string;
-  hora: string;
-  estado: 'Pendiente' | 'En Proceso' | 'Finalizado';
-  fechaInicio?: string;
-  fechaFin?: string;
-}
+import { EspecialistaCita } from '../../data/interfaces/especialista-cita.interface';
+import { EspecialistaCitaService } from '../../data/services/especialista-cita.service';
 
 @Component({
   selector: 'app-especialista-citas',
@@ -20,22 +11,58 @@ interface Cita {
   templateUrl: './especialista-cita.component.html',
   styleUrl: './especialista-cita.component.css'
 })
-export class EspecialistaCitasComponent {
+export class EspecialistaCitasComponent implements OnInit {
+  private citaService = inject(EspecialistaCitaService);
 
-  mostrarFiltros: boolean = false;
-
-  filtros = { estado: '', servicio: '', cliente: '', fecha: '' };
-  
-  citas: Cita[] = [
-    { id: 1, cliente: 'Maria Delgado', servicio: 'Manicure Spa', fecha: '2026-04-18', hora: '10:00 AM', estado: 'Pendiente' },
-    { id: 2, cliente: 'Juan Perez', servicio: 'Corte Varón', fecha: '2026-04-18', hora: '11:30 AM', estado: 'En Proceso', fechaInicio: '18/04/2026 11:35 AM' }
-  ];
-
-  citaSeleccionada: Cita | null = null;
-  mostrarDetalles = false;
-  mostrarEvidencia = false;
+  citas: EspecialistaCita[] = [];
+  citaSeleccionada: EspecialistaCita | null = null;
   imagenesEvidencia: string[] = [];
   
+  mostrarFiltros = false;
+  mostrarDetalles = false;
+  mostrarEvidencia = false;
+  filtros = { estado: '', servicio: '', cliente: '', fecha: '' };
+
+  ngOnInit(): void {
+    this.cargarDatos();
+  }
+
+  cargarDatos(): void {
+    this.citaService.getCitas().subscribe({
+      next: (data) => this.citas = data,
+      error: (e) => console.error('Error Sanbella API:', e)
+    });
+  }
+
+  /**
+   * FLUJO DE AVANCE DE ESTADOS
+   * Centraliza 'Iniciar' y 'Finalizar' en una sola lógica de persistencia
+   */
+  avanzarEstado(cita: EspecialistaCita): void {
+    const ahora = new Date().toLocaleString('es-PE', { hour12: true });
+    let cambios: Partial<EspecialistaCita> = {};
+
+    if (cita.estado === 'Pendiente') {
+      cambios = {
+        estado: 'En Proceso',
+        statusLabel: 'En Proceso',
+        fechaInicio: ahora
+      };
+    } else if (cita.estado === 'En Proceso') {
+      cambios = {
+        estado: 'Finalizado',
+        statusLabel: 'Finalizado',
+        fechaFin: ahora
+      };
+    }
+
+    if (Object.keys(cambios).length > 0) {
+      this.citaService.actualizarCita(cita.id, cambios).subscribe({
+        next: () => this.cargarDatos(), // Recarga desde el servidor para actualizar la vista
+        error: (err) => console.error('Error al actualizar estado:', err)
+      });
+    }
+  }
 
   get citasFiltradas() {
     return this.citas.filter(c => {
@@ -46,25 +73,22 @@ export class EspecialistaCitasComponent {
     });
   }
 
-  verDetalles(cita: Cita) {
+  // --- LÓGICA DE EVIDENCIAS ---
+  abrirEvidencia(cita: EspecialistaCita) {
     this.citaSeleccionada = cita;
-    this.mostrarDetalles = true;
-  }
-
-  iniciarServicio(cita: Cita) {
-    cita.estado = 'En Proceso';
-    cita.fechaInicio = new Date().toLocaleString();
-  }
-
-  finalizarServicio(cita: Cita) {
-    cita.estado = 'Finalizado';
-    cita.fechaFin = new Date().toLocaleString();
-  }
-
-  abrirEvidencia(cita: Cita) {
-    this.citaSeleccionada = cita;
-    this.imagenesEvidencia = [];
+    this.imagenesEvidencia = cita.evidencias || [];
     this.mostrarEvidencia = true;
+  }
+
+  guardarEvidencia(): void {
+    if (this.citaSeleccionada) {
+      this.citaService.actualizarCita(this.citaSeleccionada.id, { 
+        evidencias: this.imagenesEvidencia 
+      }).subscribe(() => {
+        this.mostrarEvidencia = false;
+        this.cargarDatos();
+      });
+    }
   }
 
   onFileSelected(event: any) {
@@ -78,14 +102,7 @@ export class EspecialistaCitasComponent {
     }
   }
 
-  guardarEvidencia() {
-    alert('Evidencias guardadas para ' + this.citaSeleccionada?.cliente);
-    this.mostrarEvidencia = false;
-  }
-  // Añade este método para que el botón de limpiar filtros funcione
-limpiarFiltros() {
-  this.filtros = { estado: '', servicio: '', cliente: '', fecha: '' };
-}
-
-
+  // --- UI HELPERS ---
+  verDetalles(cita: EspecialistaCita) { this.citaSeleccionada = cita; this.mostrarDetalles = true; }
+  limpiarFiltros() { this.filtros = { estado: '', servicio: '', cliente: '', fecha: '' }; }
 }

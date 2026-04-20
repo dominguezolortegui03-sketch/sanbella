@@ -1,18 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
 
-export interface Cita {
-  id: number;
-  status: 'pending' | 'completed' | 'cancelled';
-  statusLabel: string;
-  servicio: string;
-  categoria: string; // Nuevo
-  personal: string;
-  fecha: string;
-  tolerancia: number; // Nuevo
-  tiempo: number; // Solo detalle
-  precio: number; // Solo detalle
-}
+// Importamos la interfaz desde donde realmente pertenece
+import { MisCitas } from '../../data/interfaces/mis-citas.interface'; 
+import { MisCitaService } from '../../data/services/mis-citas.service';
 
 @Component({
   selector: 'app-mis-citas',
@@ -21,48 +12,46 @@ export interface Cita {
   templateUrl: './mis-citas.component.html',
   styleUrl: './mis-citas.component.css'
 })
-export class MisCitasComponent {
+export class MisCitasComponent implements OnInit {
+  private citaService = inject(MisCitaService);
+
   mostrarModal = false;
-  citaSeleccionada: Cita | null = null;
+  
+  // Usamos el nombre de la interfaz que importamos (MisCitas)
+  citaSeleccionada: MisCitas | null = null;
+  citas: MisCitas[] = [];
+  
+  usuarioLogueadoId = 1;
 
-  citas: Cita[] = [
-    {
-      id: 1,
-      status: 'pending',
-      statusLabel: 'Pendiente',
-      categoria: 'Facial',
-      servicio: 'Limpieza Facial Profunda',
-      personal: 'Claudia Pérez Mendoza',
-      fecha: '15 de Mayo, 2026 - 10:30 AM',
-      tolerancia: 10,
-      tiempo: 60,
-      precio: 120.00
-    },
-    {
-      id: 2,
-      status: 'completed',
-      statusLabel: 'Completado',
-      categoria: 'Estética',
-      servicio: 'Peeling Químico',
-      personal: 'Sandra Ramos Gutiérrez',
-      fecha: '20 de Mayo, 2026 - 02:00 PM',
-      tolerancia: 10,
-      tiempo: 45,
-      precio: 150.00
-    }
-  ];
+  ngOnInit(): void {
+    this.cargarCitas();
+  }
 
-  verDetalle(cita: Cita) {
+  cargarCitas(): void {
+    this.citaService.getCitasUsuario(this.usuarioLogueadoId).subscribe({
+      next: (data) => {
+        this.citas = data;
+      },
+      error: (err) => console.error('Error al cargar citas:', err)
+    });
+  }
+
+  verDetalle(cita: MisCitas): void {
     this.citaSeleccionada = cita;
     this.mostrarModal = true;
   }
 
-  cerrarModal() {
+  cerrarModal(): void {
     this.mostrarModal = false;
     this.citaSeleccionada = null;
   }
 
-  cancelarCita(id: number) {
-    console.log('Cancelar cita:', id);
+  cancelarCita(id: number): void {
+    if (confirm('¿Estás seguro de que deseas cancelar esta cita?')) {
+      this.citaService.cancelarCita(id).subscribe({
+        next: () => this.cargarCitas(),
+        error: (err) => console.error('Error al cancelar:', err)
+      });
+    }
   }
 }
